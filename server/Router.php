@@ -1,7 +1,8 @@
 <?php
 include_once "Methods.php";
 include_once "Checkout/PaymentInit.php";
-include_once "Checkout/PaymentStatus.php";
+include_once "Checkout/Callback.php";
+include_once "Checkout/Daraja.php";
 class Router {
     protected $directory;
     protected $request;
@@ -45,6 +46,13 @@ class Router {
                 }else if ($this->directory==='Paymentinit'){
                     $intent=new PaymentInit();
                     $intent->createPaymentIntent();
+                }else if ($this->directory==='Mpesa'){
+                    $intent=new MpesaPaymentInit();
+                    $intent->initiatePayment();
+                }
+                else if ($this->directory==='Callbackmpesa'){
+                    $intent=new Callback();
+                    $intent->checkPayment();
                 } else {
             $processes=new Methods($this->directory);
             $processes->requestMethod();

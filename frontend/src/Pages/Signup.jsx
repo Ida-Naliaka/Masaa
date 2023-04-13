@@ -91,10 +91,8 @@ const Signup = () => {
           confirmationcode:"N/A",
           status:"active"
         };
-        await axios.post("http://localhost/reactphp/server/index.php?direct=user", credentials).then((res) => {
+        await axios.post("https://pastrybox.000webhostapp.com/server/index.php?direct=user", credentials).then((res) => {
           if (res.data.status === 1) {
-            toast.success("Registration Successful! Please check your email");
-            console.log(res);
             navigate("/login");
           } else {
             toast.error(`Error Occured`);

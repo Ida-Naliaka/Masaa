@@ -18,7 +18,7 @@ const Userorders = () => {
 
   const GetUserOrders = () => {
     try {
-      axios.get(`http://localhost/reactphp/server/index.php?direct=order&userid=${user.userid}`).then((res) => {
+      axios.get(`https://pastrybox.000webhostapp.com/server/index.php?direct=order&userid=${user.userid}`).then((res) => {
         setOrders(res.data);
       });
     } catch (err) {
@@ -43,7 +43,7 @@ const Userorders = () => {
     try {
       dispatch(updateOrderStart());
       axios
-        .put(`http://localhost/reactphp/server/index.php?direct=order&orderid=${id}`, updatedOrder)
+        .put(`https://pastrybox.000webhostapp.com/server/index.php?direct=order&orderid=${id}`, updatedOrder)
         .then((res) => {
           const response = res.data;
           if (response.status) {

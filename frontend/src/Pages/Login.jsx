@@ -93,15 +93,13 @@ const Login = () => {
       const credentials = { email: email, password: password };
       const guestcred = { email: 'guestuser@gmail.com', password: 'zyxwvu@963' };
       await axios
-        .post("http://localhost/reactphp/server/index.php?direct=user", guest? guestcred: credentials)
+        .post("https://pastrybox.000webhostapp.com/server/index.php?direct=user", guest? guestcred: credentials)
         .then((res) => {
           if (res.data.success) {
             dispatch(loginSuccess(res.data.user));
-            console.log(res.data);
             navigate("/shop");
           } else {
             toast.error(res.data.message)
-            console.log(res.data);
              dispatch(loginFailure());
           }
         })
@@ -114,6 +112,7 @@ const Login = () => {
   };
   useEffect(() => {
     guest && handleClick()
+    // eslint-disable-next-line
   },[guest])
   const handleRecover = async () => {
     try {

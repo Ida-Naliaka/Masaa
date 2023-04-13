@@ -15,6 +15,7 @@ const Container = styled.div`
   margin:50px auto;
   font-family:'Satisfy', cursive;
   letter-spacing:10px;
+  ${mobile({ fontSize: "35px" })};
 `;
 const Background = styled.div`
   width: 100vw;

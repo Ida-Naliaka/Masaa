@@ -11,7 +11,7 @@ class Checkout
     private $OnlinePayment = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
     private $total_amount;
     private $Time_Stamp;
-    private $CallBackURL = 'http://localhost/reactphp/server/checkout.php';
+    private $CallBackURL = 'https://pastrybox.000webhostapp.com/server/checkout.php';
     private $password;
     protected function __construct()
     {

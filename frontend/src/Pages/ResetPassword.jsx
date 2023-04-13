@@ -81,7 +81,7 @@ const Reset = () => {
           phone: phone,
           city: city,
         };
-        await axios.post(`http://localhost/reactphp/server/index.php?direct=user?direction=resetPassword`, credentials).then((res) => {
+        await axios.post(`https://pastrybox.000webhostapp.com/server/index.php?direct=user?direction=resetPassword`, credentials).then((res) => {
           if (res.data)
             toast.success("Account Recovery Successful! Please Log in");
           navigate("/login");

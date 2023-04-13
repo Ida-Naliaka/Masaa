@@ -7,7 +7,7 @@ import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
 import { mobile } from "../responsive";
 import { Link, useNavigate } from "react-router-dom";
-import PaymentCard from "../Components/Payment/PaymentCard";
+import PaymentCard from "../Components/PaymentCard";
 import { removeProduct, addQuantity, reduceQuantity } from "../redux/cartRedux";
 import {loadStripe} from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -40,7 +40,7 @@ const TopButton = styled.button`
   cursor: pointer;
   border: ${(props) => props.type === "filled" && "none"};
   background-color: ${(props) =>
-  props.type === "filled" ? "black" : "transparent"};
+  (props.type === "filled" )? "black" : "transparent"};
   color: ${(props) => props.type === "filled" && "white"};
 `;
 
@@ -174,17 +174,11 @@ const Cart = () => {
     prod.sku === item.sku && 
       prod.quantity>1 ? dispatch(reduceQuantity(item)) : dispatch(removeProduct(item)))
   }
-  useEffect(() => {
-    if (stripePromise) {
-    console.log('stripepromise in cart works');
-  }
-},[])
-
   return (
     user && (
       <Container>
         <Navbar />
-        <Announcement />
+        <Announcement str="It's Cake O'clock!"/>
         <Wrapper>
               <Title>YOUR CART</Title>s
               <Top>

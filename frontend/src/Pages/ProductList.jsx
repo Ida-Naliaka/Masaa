@@ -43,7 +43,6 @@ const ProductList = () => {
   const location = useLocation();
   const cat = location.pathname.split("/")[2];
   const [sort, setSort] = useState("newest");
-  console.log(location.pathname, cat);
   return (
     <Container>
       <Navbar />

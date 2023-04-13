@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./AddProduct.scss";
 import { ProductState } from "./SelectContext";
 import Cake from "./Cake";
-import Cakepop from "./Cakepop";
+import Cookies from "./Cookies";
 import Pastry from "./Pastries";
 import { app } from "../../firebase";
 import {
@@ -13,6 +13,7 @@ import {
   getStorage,
   getDownloadURL,
 } from "firebase/storage";
+import Cupcakes from "./Cupcakes";
 
 const AddProduct = () => {
   // eslint-disable-next-line
@@ -37,12 +38,8 @@ const AddProduct = () => {
     setPrice,
     size,
     setSize,
-    layers,
-    setLayers,
     setQuantity,
     quantity,
-    diameter,
-    setDiameter,
   } = ProductState();
   const navigate = useNavigate();
 
@@ -54,14 +51,15 @@ const AddProduct = () => {
 
   const getProducts = () => {
     axios
-      .get("http://localhost/reactphp/server/index.php?direct=product")
+      .get("https://pastrybox.000webhostapp.com/server/index.php?direct=product")
       .then((response) => {
         setProducts(response.data);
       });
   };
   const typeSetter = {
     Cake: <Cake />,
-    Cakepop: <Cakepop />,
+    Cupcakes: <Cupcakes />,
+    Cookies: <Cookies />,
     Pastry: <Pastry />,
   };
   const handleChange = (e) => {
@@ -161,9 +159,7 @@ const AddProduct = () => {
     setSku("");
     setSize("");
     setImg("");
-    setLayers("");
     setQuantity("");
-    setDiameter("");
     setInputs({});
     setError([]);
   };
@@ -175,11 +171,11 @@ const AddProduct = () => {
       !price ||
       !type ||
       !img||
-      (!quantity && !diameter && (!size || !layers))
+      (!quantity && !size)
     ) {
       alert("Please, submit required data");
     } else {
-      fetch("http://localhost/reactphp/server/index.php?direct=product", {
+      fetch("https://pastrybox.000webhostapp.com/server/index.php?direct=product", {
         method: "post",
         body: JSON.stringify(inputs),
       })
@@ -251,7 +247,7 @@ const AddProduct = () => {
         </div>
         {error.includes(2) && (
           <div className="error">
-            Please, provide the data of indicated type
+            Please, provide product name
           </div>
         )}
         <div className="description">
@@ -271,7 +267,7 @@ const AddProduct = () => {
         </div>
         {error.includes(3) && (
           <div className="error">
-            Please, provide the data of indicated type
+            Please, provide product price
           </div>
         )}
         <div className="description">
@@ -285,7 +281,7 @@ const AddProduct = () => {
         </div>
         {error.includes(10) && (
           <div className="error">
-            Please, provide the data of indicated type
+            Please, attach image
           </div>
         )}
         <div className="description">
@@ -300,13 +296,14 @@ const AddProduct = () => {
           >
             <option value="">--Please choose product type--</option>
             <option value="Cake">Cake</option>
-            <option value="Cakepop">Cakepop</option>
+            <option value="Cupcake">Cupcake</option>
+            <option value="Cookies">Cookies</option>
             <option value="Pastry">Pastry</option>
           </select>
         </div>
         {error.includes(4) && (
           <div className="error">
-            Please, provide the data of indicated type
+            Please, select product type
           </div>
         )}
         <div className="box">{typeSetter[type]}</div>

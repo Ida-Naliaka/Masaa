@@ -3,20 +3,20 @@ import { ProductState } from "./SelectContext";
 
 const Cakepop = () => {
   // eslint-disable-next-line
-  const { error, setError, inputs, setInputs, diameter, setDiameter } = ProductState();
+  const { error, setError, inputs, setInputs, quantity, setQuantity } = ProductState();
 
   const handleChange = (e) => {
     const param = e.target.name;
     const value = e.target.value;
     // eslint-disable-next-line
     switch (param) {
-      case "diameter":
+      case "quantity":
         if (isNaN(value) || value === "") {
           setError([...error, 8]);
-          setDiameter("")
+          setQuantity("")
         } else {
           setInputs((values) => ({ ...values, [param]: value }));
-          setDiameter(value);
+          setQuantity(value);
           setError(error.filter((e) => e !== 8));
         }
         break;
@@ -25,21 +25,20 @@ const Cakepop = () => {
   return (
     <>
       <div className="description">
-        <label>Diameter(cm)</label>
+        <label>Quantity</label>
         <input
           type="number"
-          name="diameter"
-          id="diameter"
-          placeholder="Cakepop diameter"
+          name="quantity"
+          placeholder="minimum order quantity"
           onChange={(e) => {
             handleChange(e);
           }}
           required
         />
       </div>
-      <div className="info">Please provide diameter in centimeters</div>
+      <div className="info">Please provide MOQ</div>
       {error.includes(8) && (
-        <div className="error">Please, provide the data of indicated type</div>
+        <div className="error">Please, provide the minimum order quantity</div>
       )}
     </>
   );

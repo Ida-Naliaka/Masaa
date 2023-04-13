@@ -16,8 +16,7 @@ const AboutSection = styled.div`
   margin: 50px auto;
   font-family: "Bitter", serif;
   font-size: 20px;
-  width: 80%;
-  line-height: 52px;
+  width: 90vw;
   ${mobile({ fontSize: "15px", marginLeft: "10px", lineHeight: "25px" })}
 `;
 const MenuSection = styled.div`
@@ -25,13 +24,11 @@ const MenuSection = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: start;
+  text-align: center;
   margin: 50px auto;
   font-family: "Bitter", serif;
   font-size: 20px;
-  width: 100%;
-  padding:5px;
-  line-height: 52px;
+  width: 90vw;
   background:bisque;
   ${mobile({ fontSize: "15px", marginLeft: "10px", lineHeight: "25px" })}
 `;
@@ -40,11 +37,11 @@ const PricingSection = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: start;
+  text-align: center;
   margin: 50px auto;
   font-family: "Bitter", serif;
   font-size: 20px;
-  width: 100%;
+  width: 90vw;
   line-height: 52px;
   padding:5px;
   background: lemonchiffon;
@@ -64,14 +61,14 @@ const Section = styled.div`
   text-align: center;
   padding: 10px;
   width: 40%;
-  height: 400px;
+  height: fit-content;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   font-family: "Bitter", serif;
   font-weight: 300;
   
-  ${mobile({ width: "80%", height: "200px" })}
+  ${mobile({ width: "80%", height:"fit-content"})}
 `;
 const AboutTitle = styled.h4`
   font-family: "Dancing Script", cursive;
@@ -84,6 +81,7 @@ const Avatar = styled.img`
   width: 200px;
   height: 200px;
   border-radius: 50%;
+  ${mobile({ width: "100px", height: "100px"})}
 `
 const Button = styled.button`
   padding: 10px;
@@ -98,8 +96,6 @@ const Button = styled.button`
 `;
 const LandingPage = () => {
   //eslint-disable-next-line
-  const [blogItem, setBlogItem] = useState(blogs);
-
   return (
     <>
       <Homenav />
@@ -109,10 +105,10 @@ const LandingPage = () => {
         <h1 style={{ fontFamily: "'Satisfy', cursive" }}>About Us</h1>
         <p>
           Welcome to Baked Bakery! We are a Nairobi based bakery.
-          We specialise in french pastries, whipped cream and buttercream Celebration Cakes, Cupcakes and Weddings.
-          We have been committed to providing a completely personal service to each of our customers and we strive to perfect every detail to make your cake dreams come true!
-          At Baked Bakery we pride ourselves on combining traditional modern and inspired cake design with bold flavors,
-          made with the highest quality ingredients. we strive to create baked goods as unique as you
+          We specialise in french pastries, naked and glazed loaf Cakes, Cookies and Cupcakes.
+          We have been committed to providing a completely personal service to each of our customers!
+          At Baked Bakery we pride ourselves on baked goods made with the highest quality ingredients. <br/>
+          We strive to create baked goods as unique as you
         </p>
       </AboutSection>
       

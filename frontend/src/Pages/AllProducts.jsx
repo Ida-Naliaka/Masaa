@@ -69,7 +69,8 @@ const AllProducts = () => {
             <Select onChange={(e) => setCat(e.target.value)}>
               <Option value="">All Products</Option>
               <Option value="Cake">Cake</Option>
-              <Option value="Cakepop">Cakepop</Option>
+              <Option value="Cookies">Cookies</Option>
+              <Option value="Cupcakes">Cupcakes</Option>
               <Option value="Pastry">Pastry</Option>
             </Select>
           </Filter>

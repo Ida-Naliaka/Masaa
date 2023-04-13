@@ -79,13 +79,6 @@ const Homenav = () => {
                       <MenuItem
                         onClick={() => {
                           popupState.close();
-                          navigate("/");
-                        }}>
-                        Home
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => {
-                          popupState.close();
                           document.getElementById('about').scrollIntoView({
                             behavior: 'smooth'})}}>
                         About
@@ -93,24 +86,29 @@ const Homenav = () => {
                       <MenuItem
                         onClick={() => {
                           popupState.close();
-                          document.getElementById('tutorials').scrollIntoView({
+                          document.getElementById('menus').scrollIntoView({
                             behavior: 'smooth'})
                           }}>
-                              Our Blogs
+                              Menus
                                       </MenuItem>
                                       <MenuItem
                                           onClick={() => {
                                               popupState.close();
-                                              navigate("/ourwork")
+                                              document.getElementById('pricing').scrollIntoView({
+                            behavior: 'smooth'})
                                           }}>
-                              Our Gallery
+                              Pricing
                       </MenuItem>
               <MenuItem onClick={() => {
                 navigate("/shop");
                 popupState.close();
               }}>
                 Our Shop
-                </MenuItem>
+                    </MenuItem>
+            <MenuItem onClick={() => {
+                navigate("/statusupdate");
+                popupState.close();
+              }}>Order Tracking</MenuItem>
             </Menu>
             </React.Fragment>
                 )}

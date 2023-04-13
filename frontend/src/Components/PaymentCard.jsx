@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { mobile } from "../../responsive";
+import { mobile } from "../responsive";
 import {useStripe, useElements, CardExpiryElement, CardCvcElement, CardNumberElement} from '@stripe/react-stripe-js';
-import { clearCart } from "../../redux/cartRedux";
+import { clearCart } from "../redux/cartRedux";
 
 const CARD_ELEMENT_OPTIONS = {
   style: {
@@ -55,7 +55,7 @@ const MpesaButton = styled.div`
   align-items: center;
   cursor: pointer;
 `;
-const Button = styled.div`
+const Button = styled.button`
   width: 100%;
   padding: 5px;
   margin: 10px;
@@ -117,8 +117,10 @@ const PaymentCard = (props) => {
   };
    const handleResponse = (response) => {
      setLoading(false);
+     setMessage(false);
      if (response.error) {
        setErrorMsg(typeof response.error === 'string' ? response.error : response.error.message);
+       payment === 'mpesa' && setErr(true);
        return;
      } else {
        props.setPaymentCompleted(response.success ? true : false);
@@ -153,7 +155,7 @@ const PaymentCard = (props) => {
       address: address,
       status: 'pending',
     };
-    await axios.post('http://localhost/reactphp/server/index.php?direct=paymentinit', body).then((res) => {
+    await axios.post('https://pastrybox.000webhostapp.com/server/index.php?direct=paymentinit', body).then((res) => {
       handleResponse(res.data);
     })
   }
@@ -165,34 +167,26 @@ const PaymentCard = (props) => {
 
   
   const Lipanampesa = async () => {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-      axios.post(
-        "http://localhost/reactphp/server/index.php?direct=mpesa",
-        {
-          phone: phone,
-          total: cart.total,
-        },
-        config
-      ).then((res) => {
-        setMessage(res.data.Check_request_ID)
-      })
+    const body = {
+      phone: phone,
+      name: user.name,
+      email:user.email,
+      amount: cart.total,
+      products: cart,
+      description: desc || "None",
+      userid: user.userid,
+      address: address,
+      status: 'pending',
+    };
+   if (phone) {
+    setMessage(true);
+    axios.post("https://pastrybox.000webhostapp.com/server/index.php?direct=mpesa", body,).then((res) => {
+        handleResponse(res.data);
+    })
+   } else {
+     setErr(true);
+   }
   };
-  const postConfirmation = () => {
-      if (message) {
-        setErr(false);
-        navigate("/success", {
-          address: address,
-          phone: deliveryPhone,
-          products: cart
-        })
-      } else {
-        setErr(true);
-      }
-  }
 
   return (
     <ColumnDiv>
@@ -266,6 +260,7 @@ const PaymentCard = (props) => {
       </div>
       {payment === "mpesa" && (
         <ColumnDiv>
+          <form  onSubmit={Lipanampesa}>
           <ColumnDiv>
             <label for="phone" style={{ marginBottom: "10px" }}>
               Please Enter Your Mpesa Number
@@ -276,18 +271,18 @@ const PaymentCard = (props) => {
               placeholder="+25471234567"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              required
             />
           </ColumnDiv>
           <Selector>
-            <MpesaButton onClick={Lipanampesa}>
+            <MpesaButton type='submit'>
               Proceed to Payment
               <Smartphone />
             </MpesaButton>
-            <MpesaButton onClick={postConfirmation}>
-                Confirm Payment
-            </MpesaButton>
+            { message && <div style={{color:"green"}}>Please complete payment on your phone as prompted </div>}
            { err && <div style={{color:"red"}}>Payment not complete</div>}
-          </Selector>
+            </Selector>
+            </form>
         </ColumnDiv>
       )}
       {payment === "card" && (

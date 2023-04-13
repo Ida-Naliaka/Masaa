@@ -108,7 +108,7 @@ const Product = () => {
   useEffect(() => {
     const getProduct = () => {
       try {
-         axios.get("http://localhost/reactphp/server/index.php?direct=product").then((res) => {
+         axios.get("https://pastrybox.000webhostapp.com/server/index.php?direct=product").then((res) => {
           const allprod = res.data
           allprod.map(prod =>
             prod.sku === sku && (setProduct(prod))
@@ -140,7 +140,7 @@ const Product = () => {
   return (
     <Container>
       <Navbar />
-      <Announcement />
+      <Announcement str="It's Cake O'clock!"/>
       <Wrapper>
         <ImgContainer>
           <Image src={product.img} alt={product.name} />

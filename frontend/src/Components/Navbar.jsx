@@ -112,7 +112,7 @@ const Navbar = () => {
       },
     };
     await axios
-      .delete(`http://localhost/reactphp/server/index.php?direct=user?userid=${user.userid}`, config)
+      .delete(`https://pastrybox.000webhostapp.com/server/index.php?direct=user?userid=${user.userid}`, config)
       .then((res) => {
         navigate("/");
       })
@@ -141,13 +141,6 @@ const Navbar = () => {
                         }}>
                         Our Website
                     </MenuItem>
-                    <MenuItem
-                        onClick={() => {
-                          popupState.close();
-                          navigate("/shop");
-                        }}>
-                        Homepage
-                      </MenuItem>
                       <MenuItem
                         onClick={() => {
                           popupState.close();

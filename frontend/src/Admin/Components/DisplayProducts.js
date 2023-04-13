@@ -33,10 +33,9 @@ const DisplayProducts = () => {
 
   const getProducts = () => {
     axios
-      .get("http://localhost/reactphp/server/index.php?direct=product")
+      .get("https://pastrybox.000webhostapp.com/server/index.php?direct=product")
       .then((response) => {
         setProducts(response.data);
-        console.log(response.data);
       });
   };
   const handleClick = (item) => {
@@ -47,7 +46,7 @@ const DisplayProducts = () => {
 
   const handleDelete = () => {
     selectedProducts.map((prod) =>
-      fetch("http://localhost/reactphp/server/index.php?direct=product", {
+      fetch("https://pastrybox.000webhostapp.com/server/index.php?direct=product", {
         method: "post",
         body: JSON.stringify({ sku: prod }),
       })
@@ -71,6 +70,7 @@ const DisplayProducts = () => {
         </div>
         <div className="butttons">
           <button onClick={() => navigate("/admin/product/add")}>ADD</button>
+          <button onClick={() => navigate("/admin/manage")}>Website Management</button>
           <button
             onClick={() => {
               setShow(false);

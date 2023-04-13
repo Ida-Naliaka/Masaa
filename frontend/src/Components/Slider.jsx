@@ -15,7 +15,7 @@ const Container = styled.div`
     width: "100%",
     height: "60vh",
     boxSizing: "border-box",
-    display: "flex",
+    display: "none",
     position: "relative",
     overflow: "hidden",
   })}
@@ -57,7 +57,6 @@ const Slide = styled.div`
   background-color: ${(props) => props.bg};
   ${mobile({ height: "80vh" })}
 `;
-
 const Image = styled.img`
   height: 100%;
   width: 100%;

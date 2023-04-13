@@ -43,7 +43,6 @@ const Success = () => {
   const paid_amount = data.paid_amount;
   const paid_amount_currency = 'usd';
   const user = useSelector((state) => state.user.currentUser);
-console.log(data);
   return (
     <div
       style={{

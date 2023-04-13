@@ -16,14 +16,13 @@ const Products = ({ cat, sort }) => {
     const getProducts = () => {
       try {
         if (cat) {
-          axios.get("http://localhost/reactphp/server/index.php?direct=product").then((res) => {
+          axios.get("https://pastrybox.000webhostapp.com/server/index.php?direct=product").then((res) => {
             const allprod = res.data;
             const categoryfiltered = allprod.filter((prod) => prod.type === cat)
-            console.log(categoryfiltered);
             setProducts(categoryfiltered);
           });
         } else {
-          axios.get("http://localhost/reactphp/server/index.php?direct=product").then((res) => {
+          axios.get("https://pastrybox.000webhostapp.com/server/index.php?direct=product").then((res) => {
             setProducts(res.data);
           });
         }
