@@ -12,13 +12,13 @@ Masaa is built using the following technologies:
 ## 📁 Project Structure
 The project structure is as follows:
 
-/server - Contains the backend server code and API endpoints.  
+server/ - Contains the backend server code and API endpoints.  
 * controllers -Handle input validation and defines the handlers for various API endpoints.  
 * Queries.php - Defines all sql syntax. 
 * Dbconnect.php -handles database connection. 
 * index.php - Entry point for the backend server.
 * .env.example - template for the env file
-frontend/ - Contains the frontend code for the Masaa website.  
+* frontend/ - Contains the frontend code for the Masaa website.  
 * public/ - Contains static files like HTML.  
 * src/ - Contains the React components, styles, and other frontend code.  
 README.md - You are here! 😄  
