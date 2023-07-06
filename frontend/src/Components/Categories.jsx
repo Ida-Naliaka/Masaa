@@ -1,22 +1,14 @@
 import React from "react";
-import styled from "styled-components";
 import { categories } from "../data";
-import { mobile } from "../responsive";
 import CategoryItem from "./CategoryItem";
-//the container containing the photos
-const Container = styled.div`
-  display: flex;
-  padding: 5px;
-  justify-content: space-between;
-  ${mobile({ padding: "0px", marginTop: "5px", flexDirection: "column" })}
-`;
+
 const Categories = () => {
   return (
-    <Container>
+    <div className="flex md:flex-row flex-col md:p-[5px] p-0 md:mt-auto mt-[5px] justify-between mb-11">
       {categories.map((item) => (
-        <CategoryItem item={item} key={item.id} />
+        <CategoryItem item={item} key={item.productid} />
       ))}
-    </Container>
+    </div>
   );
 };
 

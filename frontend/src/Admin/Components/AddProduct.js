@@ -1,11 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./AddProduct.scss";
 import { ProductState } from "./SelectContext";
-import Cake from "./Cake";
-import Cookies from "./Cookies";
-import Pastry from "./Pastries";
 import { app } from "../../firebase";
 import {
   uploadBytesResumable,
@@ -13,33 +9,19 @@ import {
   getStorage,
   getDownloadURL,
 } from "firebase/storage";
-import Cupcakes from "./Cupcakes";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddProduct = () => {
-  // eslint-disable-next-line
   const {
     products,
     setProducts,
     error,
     setError,
-    //eslint-disable-next-line
     selectedProducts,
     setSelectedProducts,
     inputs,
     setInputs,
-    sku,
-    setSku,
-    img, setImg,
-    type,
-    setType,
-    name,
-    setName,
-    price,
-    setPrice,
-    size,
-    setSize,
-    setQuantity,
-    quantity,
   } = ProductState();
   const navigate = useNavigate();
 
@@ -51,16 +33,12 @@ const AddProduct = () => {
 
   const getProducts = () => {
     axios
-      .get("https://pastrybox.000webhostapp.com/server/index.php?direct=product")
+      .get(
+        "http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product"
+      )
       .then((response) => {
         setProducts(response.data);
       });
-  };
-  const typeSetter = {
-    Cake: <Cake />,
-    Cupcakes: <Cupcakes />,
-    Cookies: <Cookies />,
-    Pastry: <Pastry />,
   };
   const handleChange = (e) => {
     const param = e.target.name;
@@ -68,50 +46,58 @@ const AddProduct = () => {
     // eslint-disable-next-line
     switch (param) {
       case "sku":
-        const result = products.find((item) => item.sku === value);
-        if (result || value.trim() === "") {
-          setError([...error, 1]);
-          setSku("");
+        //const result = false // products? products.find((item) => item.sku === value):false
+        if (value.trim() === "") {
+          setError([...error, "sku"]);
         } else {
           setInputs((values) => ({ ...values, [param]: value }));
-          setSku(value);
-          setError(error.filter((e) => e !== 1));
+          setError(error.filter((e) => e !== "sku"));
         }
         break;
       case "name":
         if (value.trim() === "" || !isNaN(value)) {
-          setError([...error, 2]);
-          setName("")
+          setError([...error, "name"]);
         } else {
           setInputs((values) => ({ ...values, [param]: value }));
-          setName(value);
-          setError(error.filter((e) => e !== 2));
+          setError(error.filter((e) => e !== "name"));
         }
         break;
       case "price":
         if (isNaN(value) || value <= 0) {
-          setError([...error, 3]);
-          setPrice("")
+          setError([...error, "price"]);
         } else {
           setInputs((values) => ({ ...values, [param]: value }));
-          setPrice(value);
-          setError(error.filter((e) => e !== 3));
+          setError(error.filter((e) => e !== "price"));
         }
         break;
-      case "type":
+      case "category":
         if (value === "") {
-          setError([...error, 4]);
-          setType("")
+          setError([...error, "category"]);
         } else {
           setInputs((values) => ({ ...values, [param]: value }));
-          setType(value);
-          setError(error.filter((e) => e !== 4));
+          setError(error.filter((e) => e !== "category"));
+        }
+        break;
+      case "color":
+        if (value === "") {
+          setError([...error, "color"]);
+        } else {
+          setInputs((values) => ({ ...values, [param]: value }));
+          setError(error.filter((e) => e !== "color"));
+        }
+        break;
+      case "description":
+        if (value === "") {
+          setError([...error, "description"]);
+        } else {
+          setInputs((values) => ({ ...values, [param]: value }));
+          setError(error.filter((e) => e !== "description"));
         }
         break;
     }
   };
   const handlePic = async (file) => {
-    const fileName = new Date().getTime() + name;
+    const fileName = new Date().getTime() + inputs.name;
     const storage = getStorage(app);
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -139,65 +125,62 @@ const AddProduct = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
           .then((downloadURL) => {
-            setImg(downloadURL);
-            setError(error.filter((e) => e !== 10));
-             setInputs((values) => ({ ...values, [param]: downloadURL }));
+            setError(error.filter((e) => e !== "image"));
+            setInputs((values) => ({ ...values, [param]: downloadURL }));
           })
           .catch((err) => {
             console.log(err);
-            setError([...error, 10])
-            setImg("")
+            setError([...error, "image"]);
           });
       }
     );
   };
 
   const reset = () => {
-    setType("");
-    setName("");
-    setPrice("");
-    setSku("");
-    setSize("");
-    setImg("");
-    setQuantity("");
     setInputs({});
     setError([]);
+    document.getElementById("product_form").reset();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    console.log(inputs);
     if (
-      !name ||
-      !sku ||
-      !price ||
-      !type ||
-      !img||
-      (!quantity && !size)
+      "name" in inputs &&
+      "sku" in inputs &&
+      "price" in inputs &&
+      "category" in inputs &&
+      "img" in inputs &&
+      "color" in inputs &&
+      "description" in inputs
     ) {
-      alert("Please, submit required data");
-    } else {
-      fetch("https://pastrybox.000webhostapp.com/server/index.php?direct=product", {
-        method: "post",
-        body: JSON.stringify(inputs),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          getProducts();
-          navigate("/admin/product/display");
-          reset();
+      await axios
+        .post(
+          "http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product",
+          inputs
+        )
+        .then((res) => {
+          if (res.data.status) {
+            toast.success(res.data.message);
+            getProducts();
+            reset();
+          } else {
+            toast.error(res.data.message);
+          }
         });
+    } else {
+      toast.error("Please, submit required data");
     }
   };
 
   return (
     <>
-      <div className="wrapper">
+      <div className="flex justify-around items-center w-full h-[100px] bg-[#795c5f] mb-10 px-[auto] py-2.5 border-b-[black] border-b border-solid top-0">
         <div className="title">
           <h2>Product Add</h2>
         </div>
-        <div className="butttons">
+        <div className="flex justify-between items-center w-[30%]">
           <button
+            className="bg-[darken(#795c5f,10)] text-[black] cursor-pointer m-2.5 p-2.5"
             onClick={(e) => {
               e.preventDefault();
               handleSubmit();
@@ -206,6 +189,7 @@ const AddProduct = () => {
             Save
           </button>
           <button
+            className="bg-[darken(#795c5f,10)] text-[black] cursor-pointer m-2.5 p-2.5"
             onClick={() => {
               reset();
               navigate("/admin/product/display");
@@ -215,13 +199,16 @@ const AddProduct = () => {
           </button>
         </div>
       </div>
-      <form id="product_form" className="product_form box">
-        <div className="description">
-          <label>SKU</label>
+      <form
+        id="product_form"
+        className="product_form flex flex-col items-center justify-center w-[97%] h-4/5 text-xl bg-[#795c5f] mx-auto my-0 p-2.5"
+      >
+        <div className="flex justify-between items-center p-[5px]">
+          <label className="m-[5px]">SKU</label>
           <input
+            className="flex w-[70%] text-[15px] text-center box-border bg-neutral-100 m-[5px] p-2.5 border-0"
             type="text"
             name="sku"
-            id="sku"
             placeholder="Product SKU"
             onChange={(e) => {
               handleChange(e);
@@ -229,15 +216,17 @@ const AddProduct = () => {
             required
           />
         </div>
-        {error.includes(1) && (
-          <div className="error">Please, provide unique sku</div>
+        {error.includes("sku") && (
+          <div className="text-[red] text-[15px]">
+            Please, provide unique sku
+          </div>
         )}
-        <div className="description">
-          <label>Name</label>
+        <div className="flex justify-between items-center p-[5px]">
+          <label className="m-[5px]">Name</label>
           <input
+            className="flex w-[70%] text-[15px] text-center box-border bg-neutral-100 m-[5px] p-2.5 border-0"
             type="text"
             name="name"
-            id="name"
             placeholder="Product Name"
             onChange={(e) => {
               handleChange(e);
@@ -245,69 +234,115 @@ const AddProduct = () => {
             required
           />
         </div>
-        {error.includes(2) && (
-          <div className="error">
+        {error.includes("name") && (
+          <div className="text-[red] text-[15px]">
             Please, provide product name
           </div>
         )}
-        <div className="description">
-          <label>Price</label>
+        <div className="flex justify-between items-center p-[5px]">
+          <label className="m-[5px]">Price</label>
           <input
+            className="flex w-[70%] text-[15px] text-center box-border bg-neutral-100 m-[5px] p-2.5 border-0"
             type="number"
             step=".01"
             min=".01"
             name="price"
             placeholder="Product Price"
-            id="price"
             onChange={(e) => {
               handleChange(e);
             }}
             required
           />
         </div>
-        {error.includes(3) && (
-          <div className="error">
+        {error.includes("price") && (
+          <div className="text-[red] text-[15px]">
             Please, provide product price
           </div>
         )}
-        <div className="description">
-          <label>Product Image</label>
-        <input
+        <div className="flex justify-between items-center p-[5px]">
+          <label className="m-[5px]">Product Image</label>
+          <input
+            className="flex w-[70%] text-[15px] text-center box-border bg-neutral-100 m-[5px] p-2.5 border-0"
             type="file"
             onChange={(e) => {
               handlePic(e.target.files[0]);
             }}
           />
         </div>
-        {error.includes(10) && (
-          <div className="error">
-            Please, attach image
-          </div>
+        {error.includes("image") && (
+          <div className="text-[red] text-[15px]">Please, attach image</div>
         )}
-        <div className="description">
-          <label>Type Switcher</label>
+        <div className="flex justify-between items-center p-[5px]">
+          <label className="m-[5px]">Category Switcher</label>
           <select
-            name="type"
-            id="productType"
+            className="flex w-[70%] text-[15px] text-center box-border bg-neutral-100 m-[5px] p-2.5 border-0"
+            name="category"
             onChange={(e) => {
               handleChange(e);
             }}
             required
           >
-            <option value="">--Please choose product type--</option>
-            <option value="Cake">Cake</option>
-            <option value="Cupcake">Cupcake</option>
-            <option value="Cookies">Cookies</option>
-            <option value="Pastry">Pastry</option>
+            <option value="">--Please choose product category--</option>
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+            <option value="Jewellery">Jewellery</option>
+            <option value="Kiddies">Kiddies</option>
           </select>
         </div>
-        {error.includes(4) && (
-          <div className="error">
-            Please, select product type
+        {error.includes("category") && (
+          <div className="text-[red] text-[15px]">
+            Please, select product category
           </div>
         )}
-        <div className="box">{typeSetter[type]}</div>
+        <div className="flex justify-between items-center p-[5px]">
+          <label className="m-[5px]">Color</label>
+          <input
+            className="flex w-[70%] text-[15px] text-center box-border bg-neutral-100 m-[5px] p-2.5 border-0"
+            type="text"
+            name="color"
+            placeholder="color eg black"
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            required
+          />
+        </div>
+        {error.includes("color") && (
+          <div className="text-[red] text-[15px]">
+            Please, provide the product's color
+          </div>
+        )}
+        <div className="flex justify-between items-center p-[5px]">
+          <label className="m-[5px]">Description</label>
+          <input
+            className="flex w-[70%] text-[15px] text-center box-border bg-neutral-100 m-[5px] p-2.5 border-0"
+            type="text"
+            name="description"
+            placeholder="product description"
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            required
+          />
+        </div>
+        {error.includes("description") && (
+          <div className="text-[red] text-[15px]">
+            Please, provide product description
+          </div>
+        )}
       </form>
+      <ToastContainer
+        position="top-center"
+        autoClose={1200}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 };

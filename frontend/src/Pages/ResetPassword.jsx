@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { mobile } from "../responsive";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { VisibilityOutlined } from "@material-ui/icons";
@@ -19,40 +18,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const Wrapper = styled.div`
-  width: 40%;
-  padding: 20px;
-  background-color: white;
-  ${mobile({ width: "75%" })}
-`;
-
-const Title = styled.h1`
-  font-size: 24px;
-  font-weight: 300;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const Input = styled.input`
-  flex: 1;
-  min-width: 40%;
-  margin: 20px 10px 0px 0px;
-  padding: 10px;
-`;
-
-const Button = styled.button`
-  width: 40%;
-  border: none;
-  padding: 10px 10px;
-  margin-top: 10px;
-  background-color: teal;
-  color: white;
-  cursor: pointer;
 `;
 const Reset = () => {
   const [email, setEmail] = useState("");
@@ -81,11 +46,16 @@ const Reset = () => {
           phone: phone,
           city: city,
         };
-        await axios.post(`https://pastrybox.000webhostapp.com/server/index.php?direct=user?direction=resetPassword`, credentials).then((res) => {
-          if (res.data)
-            toast.success("Account Recovery Successful! Please Log in");
-          navigate("/login");
-        });
+        await axios
+          .post(
+            `http://localhost/ecommerce/php-react-website-store/server/index.php?direct=user?direction=resetPassword`,
+            credentials
+          )
+          .then((res) => {
+            if (res.data)
+              toast.success("Account Recovery Successful! Please Log in");
+            navigate("/login");
+          });
       } catch (error) {
         toast.error(`Error Occured`);
       }
@@ -96,10 +66,11 @@ const Reset = () => {
   };
   return (
     <Container>
-      <Wrapper>
-        <Title>Recover Your Account</Title>
-        <Form>
-          <Input
+      <div className="md:w-[40%] w-[75%] p-5 bg-white">
+        <h1 className="text-2xl font-light">Recover Your Account</h1>
+        <form className="flex flex-wrap">
+          <input
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
             placeholder="email"
             type="email"
             value={email}
@@ -113,7 +84,8 @@ const Reset = () => {
             special character]
           </label>
           <div style={{ display: "flex" }}>
-            <Input
+            <input
+              className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
               placeholder="password"
               type={show ? "text" : "password"}
               value={password}
@@ -138,7 +110,8 @@ const Reset = () => {
             </div>
           </div>
           <div style={{ display: "flex" }}>
-            <Input
+            <input
+              className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
               placeholder="Confirm Password"
               type={show ? "text" : "password"}
               value={confirmPassword}
@@ -163,7 +136,8 @@ const Reset = () => {
               <VisibilityOutlined style={{ fontSize: "20px", color: "gray" }} />
             </div>
           </div>
-          <Input
+          <input
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
             placeholder="Phone Number"
             type="text"
             value={phone}
@@ -172,7 +146,8 @@ const Reset = () => {
             }}
             isRequired
           />
-          <Input
+          <input
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
             placeholder="City"
             type="city"
             value={city}
@@ -181,16 +156,17 @@ const Reset = () => {
             }}
             isRequired
           />
-          <Button
+          <button
+            className="w-[40%] bg-teal-700 text-white cursor-pointer px-4 py-5"
             onClick={(e) => {
               e.preventDefault();
               handleSubmit();
             }}
           >
             SUBMIT
-          </Button>
-        </Form>
-      </Wrapper>
+          </button>
+        </form>
+      </div>
       <ToastContainer
         position="top-center"
         autoClose={1200}

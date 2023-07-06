@@ -1,7 +1,6 @@
 <?php
 function Escapestr ($str)
 {
-  
         $specialchars = "#$%^&*()+=-[]';,./{}|:<>?~";
         if (strpbrk($str, $specialchars)) {
             $escaped = addslashes($str);

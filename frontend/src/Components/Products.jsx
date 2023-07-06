@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import Product from "./Product";
 import axios from "axios";
 
-const Container = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;
 const Products = ({ cat, sort }) => {
   const [products, setProducts] = useState([]);
 
@@ -16,13 +9,14 @@ const Products = ({ cat, sort }) => {
     const getProducts = () => {
       try {
         if (cat) {
-          axios.get("https://pastrybox.000webhostapp.com/server/index.php?direct=product").then((res) => {
+          axios.get("http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product").then((res) => {
             const allprod = res.data;
-            const categoryfiltered = allprod.filter((prod) => prod.type === cat)
+            const categoryfiltered = allprod.filter((prod) => prod.category === cat)
             setProducts(categoryfiltered);
           });
         } else {
-          axios.get("https://pastrybox.000webhostapp.com/server/index.php?direct=product").then((res) => {
+          //initial endpoint http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product
+          axios.get("http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product").then((res) => {
             setProducts(res.data);
           });
         }
@@ -44,11 +38,11 @@ const Products = ({ cat, sort }) => {
   }, [sort]);
 
   return (
-    <Container>
+    <div className="p-5 flex flex-wrap justify-between">
       {products.map((item) => (
         <Product item={item} key={item.sku} />
       ))}
-    </Container>
+    </div>
   );
 };
 

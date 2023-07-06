@@ -1,169 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Add, Remove } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components";
-import Announcement from "../Components/Announcement";
-import Footer from "../Components/Footer";
-import Navbar from "../Components/Navbar";
-import { mobile } from "../responsive";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PaymentCard from "../Components/PaymentCard";
 import { removeProduct, addQuantity, reduceQuantity } from "../redux/cartRedux";
 import {loadStripe} from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
+import ShopNavbar from "../Components/ShopNavbar";
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
+//calling `loadStripe` outside of the component’s render to avoid recreating the `Stripe` object on every render.
 const stripePromise = loadStripe('pk_test_51LwigmHrQFfXoYu84CCBlCE3mtcuVgKzjmhCIpZpa9AILk2lMQROB6ShCU406iNd2zBoUItr2JgGKWBBpxXqH3E400xGdBuIDe');
-const Container = styled.div``;
-
-const Wrapper = styled.div`
-  padding: 20px;
-  ${mobile({ padding: "10px" })}
-`;
-
-const Title = styled.h1`
-  font-weight: 300;
-  text-align: center;
-`;
-
-const Top = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-`;
-
-const TopButton = styled.button`
-  padding: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  border: ${(props) => props.type === "filled" && "none"};
-  background-color: ${(props) =>
-  (props.type === "filled" )? "black" : "transparent"};
-  color: ${(props) => props.type === "filled" && "white"};
-`;
-
-const TopTexts = styled.div`
-  ${mobile({ display: "none" })}
-`;
-const TopText = styled.span`
-  text-decoration: underline;
-  cursor: pointer;
-  margin: 0px 10px;
-`;
-
-const Bottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-  ${mobile({ flexDirection: "column" })}
-`;
-
-const Info = styled.div`
-  flex: 3;
-`;
-
-const Product = styled.div`
-  display: flex;
-  justify-content: space-between;
-  ${mobile({ flexDirection: "column" })}
-`;
-const Empty = styled.div`
-  display: flex;
-  justify-content: Center;
-  align-items:center;
-  font-size:25px;
-  font weight:400;
-  color:blue;
-  padding-top:30%;
-
-  ${mobile({ flexDirection: "column" })}
-`;
-
-const ProductDetail = styled.div`
-  flex: 2;
-  display: flex;
-`;
-
-const Image = styled.img`
-  width: 200px;
-`;
-
-const Details = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-`;
-
-const ProductName = styled.span``;
-
-const ProductId = styled.span``;
-
-const ProductSize = styled.span``;
-
-const PriceDetail = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ProductAmountContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const ProductAmount = styled.div`
-  font-size: 24px;
-  margin: 5px;
-  ${mobile({ margin: "5px 15px" })}
-`;
-
-const ProductPrice = styled.div`
-  font-size: 30px;
-  font-weight: 200;
-  ${mobile({ marginBottom: "20px" })}
-`;
-
-const Hr = styled.hr`
-  background-color: #eee;
-  border: none;
-  height: 1px;
-`;
-
-const Summary = styled.div`
-  flex: 1;
-  margin-top: 20px;
-  border: 0.5px solid lightgray;
-  border-radius: 10px;
-  padding: 20px;
-  height: fit-content;
-`;
-
-const SummaryTitle = styled.h1`
-  font-weight: 200;
-`;
-
-const SummaryItem = styled.div`
-  margin: 30px 0px;
-  display: flex;
-  justify-content: space-between;
-  font-weight: ${(props) => props.type === "total" && "500"};
-  font-size: ${(props) => props.type === "total" && "24px"};
-`;
-
-const SummaryItemText = styled.span``;
-
-const SummaryItemPrice = styled.span``;
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  //eslint-disable-next-line
   const [paymentCompleted, setPaymentCompleted] = useState(false);
 
   const handleAdd=(item) => {
@@ -176,84 +28,91 @@ const Cart = () => {
   }
   return (
     user && (
-      <Container>
-        <Navbar />
-        <Announcement str="It's Cake O'clock!"/>
-        <Wrapper>
-              <Title>YOUR CART</Title>s
-              <Top>
+      <div>
+        <ShopNavbar />
+        <div className="md:p-5 p-2.5">
+              <h1 className="font-light text-center">YOUR CART</h1>
+              <div className="flex items-center justify-between p-5">
                 <Link to="/shop">
                   {" "}
-                  <TopButton>CONTINUE SHOPPING</TopButton>
+                  <button className="font-semibold cursor-pointer bg-[black] text-[white] p-2.5">
+                    CONTINUE SHOPPING
+                  </button>
                 </Link>
-                <TopTexts>
-                  <TopText>Shopping cart({cart.products.length})</TopText>
-                  <TopText>Your Wishlist (0)</TopText>
-                </TopTexts>
-                <TopButton type="filled">CHECKOUT NOW</TopButton>
-              </Top>
-              <Bottom>
-                <Info>
+                <div className="md:flex hidden">
+                  <span className="underline cursor-pointer mx-2.5 my-0">Shopping cart({cart.products.length})</span>
+                  <span className="underline cursor-pointer mx-2.5 my-0">Your Wishlist (0)</span>
+                </div>
+                <button className="font-semibold cursor-pointer bg-[black] text-[white] p-2.5">CHECKOUT NOW</button>
+              </div>
+              <div className="flex md:flex-row flex-col justify-between">
+                <div className="flex-3">
                   {cart.products.map((product) => (
-                    <Product key={product.sku}>
-                      <ProductDetail>
-                        <Image src={product.img} />
-                        <Details>
-                          <ProductName>
-                            <b>Product:</b> {product.name}
-                          </ProductName>
-                          <ProductId>
+                    <div className="flex md:flex-row flex-col justify-between" key={product.sku}>
+                      <div className="flex-1 flex flex-col items-center justify-center">
+                        <img className="w-[200px]" src={product.img} alt={product.name} />
+                        <div className="flex flex-col justify-around p-5">
+                          <span>
+                            <b>Product:</b> {product.name}: {product.color}
+                          </span>
+                          <span>
                             <b>ID:</b> {product.sku}
-                          </ProductId>
-                          <ProductSize>
-                            <b>Value:</b>{product.value}
-                          </ProductSize>
-                          <ProductSize>
+                          </span>
+                          <span>
+                            <b>Description:</b>{product.description}
+                          </span>
+                          <span>
                             <b>Quantity</b>{product.quantity}
-                          </ProductSize>
-                        </Details>
-                      </ProductDetail>
-                      <PriceDetail>
-                        <ProductAmountContainer>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex-1 flex flex-col items-center justify-center">
+                        <div className="flex items-center mb-5">
                           <Add style={{ cursor: "pointer" }} onClick={() => handleAdd(product)} />
-                          <ProductAmount>{product.quantity}</ProductAmount>
+                          <div className="text-2xl md:mx-[5px] mx-[15px] my-[5px] ">
+                            {product.quantity}
+                          </div>
                           <Remove style={{ cursor: "pointer" }}
                             onClick={() => handleRemove(product)}
                           />
-                        </ProductAmountContainer>
-                        <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
-                      </PriceDetail>
-                    </Product>
+                        </div>
+                        <div className="text-3xl font-extralight md:mb-0 mb-5">
+                          $ {product.price * product.quantity}
+                        </div>
+                      </div>
+                    </div>
                   ))}
-                  <Hr />
-                  {!cart.products.length && <Empty>Cart is empty!</Empty>}
-                </Info>
-                <Summary>
-                  <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-                  <SummaryItem>
-                    <SummaryItemText>Subtotal</SummaryItemText>
-                    <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-                  </SummaryItem>
-                  <SummaryItem>
-                    <SummaryItemText>Estimated Shipping</SummaryItemText>
-                    <SummaryItemPrice>$ 5.90</SummaryItemPrice>
-                  </SummaryItem>
-                  <SummaryItem>
-                    <SummaryItemText>Shipping Discount</SummaryItemText>
-                    <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-                  </SummaryItem>
-                  <SummaryItem type="total">
-                    <SummaryItemText>Total</SummaryItemText>
-                    <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-                  </SummaryItem>
+                  <hr className="bg-[#eee] h-px border-[none]" />
+                  {!cart.products.length &&
+                  <div className="flex md:flex-row flex-col justify-center items-center text-[25px] font-normal text-[blue] pt-[30%]">
+                    Cart is empty!
+                  </div>}
+                </div>
+                <div className="flex-1 h-fit mt-5 p-5 rounded-[10px] border-[0.5px] border-solid border-[lightgray]">
+                  <h1 className="font-extralight">ORDER SUMMARY</h1>
+                  <div className="flex justify-between mx-0 my-[30px]">
+                    <span>Subtotal</span>
+                    <span>$ {cart.total}</span>
+                  </div>
+                  <div className="flex justify-between mx-0 my-[30px]">
+                    <span>Estimated Shipping</span>
+                    <span>$ 5.90</span>
+                  </div>
+                  <div className="flex justify-between mx-0 my-[30px]">
+                    <span>Shipping Discount</span>
+                    <span>$ -5.90</span>
+                  </div>
+                  <div className="flex justify-between font-medium text-2xl mx-0 my-[30px]" type="total">
+                    <span>Total</span>
+                    <span>$ {cart.total}</span>
+                  </div>
                   <Elements stripe={stripePromise}>
                     <PaymentCard amount={cart.total} setPaymentCompleted={setPaymentCompleted} />
                   </Elements>
-                </Summary>
-              </Bottom>
-        </Wrapper>
-        <Footer />
-      </Container>
+                </div>
+              </div>
+        </div>
+      </div>
     )
   );
 };

@@ -20,17 +20,18 @@ class DbConnect
             if ($conn->query($db) === true) {
                 echo "Database created successfully";
                 $conn->select_db($dbname);
-                $productstable = "CREATE TABLE `bakedproducts` (
+                $productstable = "CREATE TABLE `Masaaproducts` (
                     `productid` int(255) COLLATE utf8_bin NOT NULL PRIMARY KEY AUTO_INCREMENT,
                     `sku` varchar(255) COLLATE utf8_bin NOT NULL,
                     `name` varchar(255) COLLATE utf8_bin NOT NULL,
                     `img` varchar(255) COLLATE utf8_bin NOT NULL,
                     `price` varchar(255) COLLATE utf8_bin NOT NULL,
-                    `type` varchar(255) COLLATE utf8_bin NOT NULL,
-                    `value` varchar(255) COLLATE utf8_bin NOT NULL,
+                    `category` varchar(255) COLLATE utf8_bin NOT NULL,
+                    `color` varchar(255) COLLATE utf8_bin NOT NULL,
+                    `description` varchar(255) COLLATE utf8_bin NOT NULL,
                     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-                    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,)";
-                if ($conn->query($productstable) === true) {
+                    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP)";
+                if ($conn->query($productstable)) {
                     echo "Table products created successfully";
                 } else {
                     echo "Error creating table: " . $conn->error;
@@ -48,7 +49,7 @@ class DbConnect
                     `status` varchar(255) COLLATE utf8_bin NOT NULL,
                     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
                     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP)";
-                if ($conn->query($userstable) === true) {
+                if ($conn->query($userstable)) {
                     echo "Table users created successfully";
                 } else {
                     echo "Error creating table: " . $conn->error;
@@ -71,7 +72,7 @@ class DbConnect
                     `payment_status` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
                     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
                     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-                if ($conn->query($orderstable) === true) {
+                if ($conn->query($orderstable)) {
                     echo "Table orders created successfully";
                 } else {
                     echo "Error creating table: " . $conn->error;

@@ -1,10 +1,7 @@
-import { Smartphone } from "@material-ui/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { mobile } from "../responsive";
 import {useStripe, useElements, CardExpiryElement, CardCvcElement, CardNumberElement} from '@stripe/react-stripe-js';
 import { clearCart } from "../redux/cartRedux";
 
@@ -25,61 +22,14 @@ const CARD_ELEMENT_OPTIONS = {
   },
 };
 
-const Choice = styled.option`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 150px;
-  margin: 10px;
-`;
-const Selector = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  height: fit-content ${mobile({ width: "80%", flexDirection: "column" })};
-`;
-const ColumnDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-const MpesaButton = styled.div`
-  width: 100%;
-  padding: 10px;
-  margin: 10px;
-  background-color: green;
-  color: white;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
-const Button = styled.button`
-  width: 100%;
-  padding: 5px;
-  margin: 10px;
-  background-color: ${(props) => props.isloading? 'blue': 'green'};
-  color: white;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
-
 const PaymentCard = (props) => {
-  const [payment, setPayment] = useState("");
-  const [delivery, setDelivery] = useState("");
-  const [address, setAddress] = useState("Store Pickup");
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user.currentUser);
-  const [phone, setPhone] = useState(user.phone);
+  const [delivery, setDelivery] = useState("");
+  const [address, setAddress] = useState("Store Pickup");
   const [deliveryPhone, setDeliveryphone] = useState();
-  const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [desc, setDesc] = useState("");
-  const [err, setErr] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
@@ -117,10 +67,8 @@ const PaymentCard = (props) => {
   };
    const handleResponse = (response) => {
      setLoading(false);
-     setMessage(false);
      if (response.error) {
        setErrorMsg(typeof response.error === 'string' ? response.error : response.error.message);
-       payment === 'mpesa' && setErr(true);
        return;
      } else {
        props.setPaymentCompleted(response.success ? true : false);
@@ -150,12 +98,11 @@ const PaymentCard = (props) => {
       email: result.paymentMethod.billing_details.email,
       amount: amount,
       products: cart,
-      description:desc || "None",
       userid: user.userid,
       address: address,
       status: 'pending',
     };
-    await axios.post('https://pastrybox.000webhostapp.com/server/index.php?direct=paymentinit', body).then((res) => {
+    await axios.post('http://localhost/ecommerce/php-react-website-store/server/index.php?direct=paymentinit', body).then((res) => {
       handleResponse(res.data);
     })
   }
@@ -165,31 +112,8 @@ const PaymentCard = (props) => {
   delivery==="pickup" && setAddress("Store Pickup")
   }, [delivery])
 
-  
-  const Lipanampesa = async () => {
-    const body = {
-      phone: phone,
-      name: user.name,
-      email:user.email,
-      amount: cart.total,
-      products: cart,
-      description: desc || "None",
-      userid: user.userid,
-      address: address,
-      status: 'pending',
-    };
-   if (phone) {
-    setMessage(true);
-    axios.post("https://pastrybox.000webhostapp.com/server/index.php?direct=mpesa", body,).then((res) => {
-        handleResponse(res.data);
-    })
-   } else {
-     setErr(true);
-   }
-  };
-
   return (
-    <ColumnDiv>
+    <div className="flex flex-col items-center">
       <div
         style={{
           display: "flex",
@@ -197,18 +121,8 @@ const PaymentCard = (props) => {
           alignItems: "center",
         }}
       >
-        <label for="address" style={{ marginBottom: "10px" }}>
-              Please enter any requirements for your order, 
-            </label>
-            <input
-              id="desc"
-              type="text"
-              placeholder="Allergies, design etc"
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-              />
         <h4>Enter Delivery Details</h4>
-         <Selector>
+         <div className="flex md:flex-row flex-col justify-around items-center md:w-full w-[80%] h-fit">
           <select
             name="delivery"
             id="delivery"
@@ -216,13 +130,17 @@ const PaymentCard = (props) => {
             style={{ marginBottom: "10px" }}
             onChange={(e) => setDelivery(e.target.value)}
           >
-            <Choice value="pickup">Store Pickup</Choice>
-            <Choice value="delivery">Delivery</Choice>
+            <option className="flex justify-center items-center w-[150px] m-2.5" value="pickup">
+              Store Pickup
+            </option>
+            <option className="flex justify-center items-center w-[150px] m-2.5" value="delivery">
+              Delivery
+            </option>
           </select>
-        </Selector>
+        </div>
         {delivery === "delivery" && (
-        <ColumnDiv>
-          <ColumnDiv>
+        <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center">
               <label for="address" style={{ marginBottom: "10px" }}>
               Please Enter Your delivery address
             </label>
@@ -240,52 +158,10 @@ const PaymentCard = (props) => {
               value={deliveryPhone}
               onChange={(e) => setDeliveryphone(e.target.value)}
             />
-            </ColumnDiv>
-        </ColumnDiv>
+            </div>
+        </div>
       )}
-        <h4>Choose payment method below</h4>
-        <Selector>
-          <select
-            name="payment"
-            id="payment"
-            label="Select a Payment Method"
-            style={{ marginBottom: "10px" }}
-            onChange={(e) => setPayment(e.target.value)}
-          >
-            <Choice value="">Select Payment Method</Choice>
-            <Choice value="card">Pay {cart.total} with Card</Choice>
-            <Choice value="mpesa">Pay {cart.total} with Mpesa </Choice>
-          </select>
-        </Selector>
       </div>
-      {payment === "mpesa" && (
-        <ColumnDiv>
-          <form  onSubmit={Lipanampesa}>
-          <ColumnDiv>
-            <label for="phone" style={{ marginBottom: "10px" }}>
-              Please Enter Your Mpesa Number
-            </label>
-            <input
-              id="phone"
-              type="text"
-              placeholder="+25471234567"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-          </ColumnDiv>
-          <Selector>
-            <MpesaButton type='submit'>
-              Proceed to Payment
-              <Smartphone />
-            </MpesaButton>
-            { message && <div style={{color:"green"}}>Please complete payment on your phone as prompted </div>}
-           { err && <div style={{color:"red"}}>Payment not complete</div>}
-            </Selector>
-            </form>
-        </ColumnDiv>
-      )}
-      {payment === "card" && (
         <form>
           <label>Name on card</label>
           <input type="text" value={name} placeholder="Enter name" required="" autoFocus="" onChange={(e) => { setName(e.target.value) }} />
@@ -306,11 +182,14 @@ const PaymentCard = (props) => {
               id="expiry"
               options={CARD_ELEMENT_OPTIONS}
           />
-          <Button disabled={!stripe || loading} isloading={loading} onClick={(e)=>handleSubmit(e)}>CHECKOUT NOW</Button>
+          <button
+            className={loading?
+              "w-full text-[white] font-semibold flex items-center cursor-pointer m-2.5 p-[5px] bg-[blue]":
+              "w-full text-[white] font-semibold flex items-center cursor-pointer m-2.5 p-[5px] bg-[green]"} 
+          disabled={!stripe || loading} onClick={(e)=>handleSubmit(e)}>CHECKOUT NOW</button>
            {errorMsg && <div  style={{color:"red"}}> {errorMsg}</div>}
         </form>
-      )}
-    </ColumnDiv>
+    </div>
   );
 };
 

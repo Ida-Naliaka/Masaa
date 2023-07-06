@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { mobile } from "../responsive";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { VisibilityOutlined } from "@material-ui/icons";
@@ -21,43 +20,6 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const Wrapper = styled.div`
-  width: 40%;
-  padding: 20px;
-  background-color: white;
-  ${mobile({ width: "75%" })}
-`;
-
-const Title = styled.h1`
-  font-size: 24px;
-  font-weight: 300;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const Input = styled.input`
-  flex: 1;
-  min-width: 40%;
-  margin: 20px 10px 0px 0px;
-  padding: 10px;
-`;
-
-const Agreement = styled.span`
-  font-size: 12px;
-  margin: 20px 0px;
-`;
-
-const Button = styled.button`
-  width: 40%;
-  border: none;
-  padding: 15px 20px;
-  background-color: teal;
-  color: white;
-  cursor: pointer;
-`;
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -68,7 +30,6 @@ const Signup = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
-  
   const handleSubmit = async () => {
     const paswd = new RegExp("(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})");
     if (!name || !email || !password || !confirmPassword) {
@@ -80,18 +41,23 @@ const Signup = () => {
         toast.warning("Passwords do not match.");
         return;
       }
-        const credentials = {
-          name: name,
-          type: "Client",
-          employeeid:"N/A",
-          email: email,
-          password: password,
-          city: city,
-          phone: phone,
-          confirmationcode:"N/A",
-          status:"active"
-        };
-        await axios.post("https://pastrybox.000webhostapp.com/server/index.php?direct=user", credentials).then((res) => {
+      const credentials = {
+        name: name,
+        type: "Client",
+        employeeid: "N/A",
+        email: email,
+        password: password,
+        city: city,
+        phone: phone,
+        confirmationcode: "N/A",
+        status: "active",
+      };
+      await axios
+        .post(
+          "http://localhost/ecommerce/php-react-website-store/server/index.php?direct=user",
+          credentials
+        )
+        .then((res) => {
           if (res.data.status === 1) {
             navigate("/login");
           } else {
@@ -106,10 +72,11 @@ const Signup = () => {
   };
   return (
     <Container>
-      <Wrapper>
-        <Title>CREATE AN ACCOUNT</Title>
-        <Form>
-          <Input
+      <div className="md:w-[40%] w-[75%] p-5 bg-white">
+        <h1 className="text-2xl font-light">CREATE AN ACCOUNT</h1>
+        <form className="flex flex-wrap">
+          <input
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
             placeholder="Full name"
             type="text"
             value={name}
@@ -118,7 +85,8 @@ const Signup = () => {
             }}
             isRequired
           />
-          <Input
+          <input
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
             placeholder="email"
             type="email"
             value={email}
@@ -132,7 +100,8 @@ const Signup = () => {
             special character]
           </label>
           <div style={{ display: "flex" }}>
-            <Input
+            <input
+              className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
               placeholder="password"
               type={show ? "text" : "password"}
               value={password}
@@ -156,8 +125,9 @@ const Signup = () => {
               <VisibilityOutlined style={{ fontSize: "20px", color: "gray" }} />
             </div>
           </div>
-          <div style={{ display: "flex" }}>
-            <Input
+          <div className="flex">
+            <input
+              className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
               placeholder="Confirm Password"
               type={show ? "text" : "password"}
               value={confirmPassword}
@@ -182,7 +152,8 @@ const Signup = () => {
               <VisibilityOutlined style={{ fontSize: "20px", color: "gray" }} />
             </div>
           </div>
-          <Input
+          <input
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
             placeholder="Phone Number"
             type="text"
             value={phone}
@@ -191,7 +162,8 @@ const Signup = () => {
             }}
             isRequired
           />
-          <Input
+          <input
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
             placeholder="City"
             type="city"
             value={city}
@@ -200,24 +172,25 @@ const Signup = () => {
             }}
             isRequired
           />
-          <Agreement>
+          <span className="text-xs mx-[20px] my-0">
             By creating an account, I consent to the processing of my personal
             data in accordance with the{" "}
             <b>
               <a href="https://github.com/Ida-Naliaka">PRIVACY POLICY</a>
             </b>
-          </Agreement>
-          <Button
+          </span>
+          <button
+            className="w-[40%] bg-teal-700 text-white cursor-pointer px-4 py-5"
             onClick={(e) => {
               e.preventDefault();
               handleSubmit();
             }}
           >
             CREATE
-          </Button>
-        </Form>
+          </button>
+        </form>
         Already have an account? <Link to="/login"> Login</Link>
-      </Wrapper>
+      </div>
       <ToastContainer
         position="top-center"
         autoClose={1200}

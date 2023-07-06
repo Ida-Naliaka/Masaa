@@ -5,7 +5,7 @@ include_once "Queries.php";
 class ProductOperations extends Queries
 
 {
-    private $table = "bakedproducts"; 
+    private $table = "Masaaproducts"; 
 
     function __construct()
     {
@@ -28,9 +28,9 @@ class ProductOperations extends Queries
                 $values->name,
                 $values->img,
                 $values->price,
-                $values->type,
-                $values->value,
-                
+                $values->category,
+                $values->color,
+                $values->description,
                 
             ],
             $columns

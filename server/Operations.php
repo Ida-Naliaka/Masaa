@@ -37,7 +37,7 @@ class Operations extends Queries
             ->sort($column)
             ->get();
     }
-    public function erase(string $column, string $value)
+    public function erase(string $column, string $sku)
     {
         return $this->delete($column, $sku);
     }

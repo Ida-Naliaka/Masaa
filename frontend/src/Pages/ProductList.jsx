@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Navbar from "../Components/Navbar";
+import ShopNavbar from "../Components/ShopNavbar";
 import Products from "../Components/Products";
 import Footer from "../Components/Footer";
 import { mobile } from "../responsive";
@@ -11,33 +11,10 @@ const Container = styled.div`
   ${mobile({ padding: "15px", marginTop: "15%", flexDirection: "column" })}
 `;
 
-const Title = styled.h1`
-  margin: 5px;
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const Filter = styled.div`
   margin: 20px;
   ${mobile({ width: "0px 20px", display: "flex", flexDirection: "column" })}
 `;
-
-const FilterText = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-  margin-right: 20px;
-  ${mobile({ marginRight: "0px" })}
-`;
-
-const Select = styled.select`
-  padding: 10px;
-  margin-right: 20px;
-  ${mobile({ margin: "10px 0px" })}
-`;
-const Option = styled.option``;
 
 const ProductList = () => {
   const location = useLocation();
@@ -45,7 +22,7 @@ const ProductList = () => {
   const [sort, setSort] = useState("newest");
   return (
     <Container>
-      <Navbar />
+      <ShopNavbar />
       <Container
         style={{
           padding: "10px",
@@ -55,17 +32,17 @@ const ProductList = () => {
           alignItems: "center",
         }}
       >
-        <Title>{cat}</Title>
-        <FilterContainer>
+        <h1 className="m-1">{cat}</h1>
+        <div className="flex justify-between">
           <Filter>
-            <FilterText>Sort Products:</FilterText>
-            <Select onChange={(e) => setSort(e.target.value)}>
-              <Option value="newest">Newest</Option>
-              <Option value="asc">Price (asc)</Option>
-              <Option value="desc">Price (desc)</Option>
-            </Select>
+            <span className="text-xl font-semibold md:mr-5 mr-0">Sort Products:</span>
+            <select className="p-2 md:mr-5 mr-0 md:my:0 my-2" onChange={(e) => setSort(e.target.value)}>
+              <option value="newest">Newest</option>
+              <option value="asc">Price (asc)</option>
+              <option value="desc">Price (desc)</option>
+            </select>
           </Filter>
-        </FilterContainer>
+        </div>
         <Products cat={cat} sort={sort} />
       </Container>
       <Footer />

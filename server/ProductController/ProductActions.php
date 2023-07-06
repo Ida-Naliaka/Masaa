@@ -1,21 +1,17 @@
 <?php
-
 include_once "HelperFunctions/response.php";
-include_once "ProductGroups/Cake.php";
-include_once "ProductGroups/Pastries.php";
-include_once "ProductGroups/Cakepops.php";
-include_once "ProductGroups/Invalid.php";
+include_once "ProductValidation/Product.php";
 include_once "Operations.php";
 
 class ProductActions extends Operations
 {
-    private $table = "bakedproducts"; 
+    private $table = "Masaaproducts"; 
 
     function __construct()
     {
         parent::__construct($this->table);
     }
-    //get products from db
+    //get products from db and order by productid
     public function getRecords()
     {
         return response($this->getAll("productid"));
@@ -25,28 +21,32 @@ class ProductActions extends Operations
     {
         $product = json_decode(file_get_contents("php://input"), true);
         if (count($product) > 1) {
-            $cname = $product["type"];
-            if (class_exists($cname)) {
-                $newproduct = new $cname($product);
+                $newproduct = new Product($product);
                 $errors = $newproduct->validateData();
                 if (!$errors) {
                     return response(
-                        $this->save($newproduct, [
+                        $this->save([
+                            $newproduct->sku,
+                            $newproduct->name,
+                            $newproduct->img,
+                            $newproduct->price,
+                            $newproduct->category,
+                            $newproduct->color,
+                            $newproduct->description
+                        ],
+                        [
                             "sku",
                             "name",
                             "img",
                             "price",
-                            "type",
-                            "value",
-                            
+                            "category",
+                            "color",
+                            "description"
                         ])
                     );
                 } else {
                     return response($errors);
                 }
-            } else {
-                $newproduct = new Invalid($product);
-            }
         } else {
             $deletesku = $product["sku"];
             return response($this->erase("sku", $deletesku));

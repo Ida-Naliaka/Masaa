@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { mobile } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { VisibilityOutlined } from "@material-ui/icons";
@@ -30,47 +29,6 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const Wrapper = styled.div`
-  width: 25%;
-  padding: 20px;
-  background-color: white;
-  ${mobile({ width: "75%" })}
-`;
-
-const Title = styled.h1`
-  font-size: 24px;
-  font-weight: 300;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Input = styled.input`
-  flex: 1;
-  min-width: 40%;
-  margin: 10px 0;
-  padding: 10px;
-`;
-
-const Button = styled.button`
-  width: 40%;
-  border: none;
-  padding: 15px 20px;
-  background-color: teal;
-  color: white;
-  cursor: pointer;
-  margin-bottom: 10px;
-  &:disabled {
-    color: green;
-    cursor: not-allowed;
-  }
-`;
-
-const Error = styled.span`
-  color: red;
-`;
 const Login = () => {
   const [email, setEmail] = useState("");
   const [guest, setGuest] = useState(false);
@@ -93,7 +51,7 @@ const Login = () => {
       const credentials = { email: email, password: password };
       const guestcred = { email: 'guestuser@gmail.com', password: 'zyxwvu@963' };
       await axios
-        .post("https://pastrybox.000webhostapp.com/server/index.php?direct=user", guest? guestcred: credentials)
+        .post("http://localhost/ecommerce/php-react-website-store/server/index.php?direct=user", guest? guestcred: credentials)
         .then((res) => {
           if (res.data.success) {
             dispatch(loginSuccess(res.data.user));
@@ -127,17 +85,17 @@ const Login = () => {
 
   return (
     <Container>
-      <Wrapper>
-        <Title>SIGN IN</Title>
-        <Form>
-          <Input
+      <div className="md:w-3/12 w-9/12 bg-[white] p-5">
+        <h1 className="text-2xl font-light">SIGN IN</h1>
+        <form className="flex flex-col">
+          <input className="flex-1 min-w-[40%] mx-0 my-2.5 p-2.5"
             placeholder="Email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <div style={{ display: "flex" }}>
-            <Input
+            <input className="flex-1 min-w-[40%] mx-0 my-2.5 p-2.5"
               placeholder="Password"
               type={show ? "text" : "password"}
               value={password}
@@ -163,13 +121,13 @@ const Login = () => {
           {forgot && (
             <>
               <label style={{ color: "red" }}>Recover your Account</label>
-              <Input
+              <input className="flex-1 min-w-[40%] mx-0 my-2.5 p-2.5"
                 placeholder="Enter Email Address"
                 type="email"
                 value={recoveryemail}
                 onChange={(e) => setRecoveryEmail(e.target.value)}
               />
-              <Button
+              <button className="w-2/5 bg-[teal] text-[white] cursor-pointer mb-2.5 px-5 py-[15px] border-[none] disabled:text-[green] disabled:cursor-not-allowed"
                 onClick={(e) => {
                   e.preventDefault();
                   handleRecover();
@@ -177,11 +135,11 @@ const Login = () => {
                 style={{ background: "black" }}
               >
                 Submit
-              </Button>
+              </button>
             </>
           )}
           <div style={{display:'flex', justifyContent:'space-around'}}>
-          <Button
+          <button className="w-2/5 bg-[teal] text-[white] cursor-pointer mb-2.5 px-5 py-[15px] border-[none] disabled:text-[green] disabled:cursor-not-allowed"
             onClick={(e) => {
               e.preventDefault();
               handleClick();
@@ -189,8 +147,8 @@ const Login = () => {
             disabled={isFetching}
           >
             LOGIN
-          </Button>
-          <Button
+          </button>
+          <button className="w-2/5 bg-[teal] text-[white] cursor-pointer mb-2.5 px-5 py-[15px] border-[none] disabled:text-[green] disabled:cursor-not-allowed"
             onClick={(e) => {
               e.preventDefault();
               setGuest(true)
@@ -198,9 +156,9 @@ const Login = () => {
             disabled={isFetching}
           >
           GUEST LOGIN
-            </Button>
+            </button>
           </div>
-          {error && <Error>Something went wrong...</Error>}
+          {error && <span className="text-[red]">Something went wrong...</span>}
           <div onClick={() => setForgot(true)} style={{ cursor: "pointer" }}>
             <u>Don't remember your Password?</u>
           </div>
@@ -215,8 +173,8 @@ const Login = () => {
           >
             CREATE A NEW ACCOUNT
           </Link>
-        </Form>
-      </Wrapper>
+        </form>
+      </div>
       <ToastContainer
         position="top-center"
         autoClose={1200}

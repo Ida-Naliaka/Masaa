@@ -4,7 +4,6 @@ import { DeleteOutline } from "@material-ui/icons";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetOrders } from "../../redux/apiCalls";
-import "./Myorders.scss";
 import { deleteOrderFailure, deleteOrderStart, deleteOrderSuccess, updateOrderFailure, updateOrderStart, updateOrderSuccess } from '../../redux/orderRedux';
 import axios from 'axios';
 import { ToastContainer, toast } from "react-toastify";
@@ -24,7 +23,7 @@ const Myorders = () => {
   const handleDelete = (id) => {
     try {
       dispatch(deleteOrderStart());
-      axios.delete(`http://localhost/reactphp/server/index.php?direct=order&orderid=${id}`).then((res) => {
+      axios.delete(`http://localhost/ecommerce/php-react-website-store/server/index.php?direct=order&orderid=${id}`).then((res) => {
         if (res.data.status) {
           dispatch(deleteOrderSuccess(id));
           toast.success(res.data.message);
@@ -52,7 +51,7 @@ const Myorders = () => {
     try {
       dispatch(updateOrderStart());
       axios
-        .put(`http://localhost/reactphp/server/index.php?direct=order&orderid=${id}`, updatedOrder)
+        .put(`http://localhost/ecommerce/php-react-website-store/server/index.php?direct=order&orderid=${id}`, updatedOrder)
         .then((res) => {
           const response = res.data;
           if (response.status) {
@@ -82,7 +81,7 @@ const Myorders = () => {
       width: 200,
       renderCell: (params) => {
         return (
-          <div className="orderListItem">
+          <div className="flex items-center">
             {params.row.product_name}
           </div>
         );
@@ -94,7 +93,7 @@ const Myorders = () => {
       width: 80,
       renderCell: (params) => {
         return (
-          <div className="orderListItem">
+          <div className="flex items-center">
             {params.row.product_quantity}
           </div>
         );
@@ -106,7 +105,7 @@ const Myorders = () => {
       width: 150,
       renderCell: (params) => {
         return (
-          <div className="orderListItem">
+          <div className="flex items-center">
             {params.row.customer_name}
           </div>
         );
@@ -118,7 +117,7 @@ const Myorders = () => {
       width: 200,
       renderCell: (params) => {
         return (
-          <div className="orderListItem">
+          <div className="flex items-center">
             {params.row.customer_email}
           </div>
         );
@@ -130,7 +129,7 @@ const Myorders = () => {
       width: 100,
       renderCell: (params) => {
         return (
-          <div className="orderListItem">
+          <div className="flex items-center">
             {params.row.product_price}
           </div>
         );
@@ -142,7 +141,7 @@ const Myorders = () => {
       width: 160,
       renderCell: (params) => {
         return (
-          <div className="orderListItem">
+          <div className="flex items-center">
             {params.row.description}
           </div>
         );
@@ -151,7 +150,7 @@ const Myorders = () => {
     { field: "status", headerName: "Status", width: 200,
     renderCell: (params) => {
         return (
-          <div className="orderListItem">
+          <div className="flex items-center">
             {params.row.order_status}
             <select onChange={(e) => { setStatus(e.target.value) }}>
               <option value="">--</option>
@@ -172,7 +171,7 @@ const Myorders = () => {
       renderCell: (params) => {
         return (
           <>
-            <button className="orderListUpdate"
+            <button className="bg-[green] text-[white] w-fit cursor-pointer"
               onClick={() => handleStatusChange(params.row.orderid)}>
             Update
             </button>
@@ -189,7 +188,7 @@ const Myorders = () => {
         return (
           <>
             <DeleteOutline
-              className="orderListDelete"
+              className="text-[red] cursor-pointer"
               onClick={() => handleDelete(params.row.orderid)}
             />
           </>
@@ -199,7 +198,7 @@ const Myorders = () => {
   ];
 
   return (
-    <div className="orderList">
+    <div className=" flex-4">
       <DataGrid
         autoHeight {...orders}
         rows={orders}

@@ -1,83 +1,44 @@
 import React from "react";
-import styled from "styled-components";
-import Navbar from "../Components/Navbar";
+import ShopNavbar from "../Components/ShopNavbar";
 import Products from "../Components/Products";
 import Footer from "../Components/Footer";
-import { mobile } from "../responsive";
 import { useState } from "react";
 
-const Container = styled.div`
-padding: 10px;
-margin-top: 10%;
-display:flex;
-flex-direction:column;
-align-items:center;
-${mobile({ marginTop: "20%" })}
-`;
-
-const Title = styled.h1`
-  margin: 10px;
-  padding:10px;
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Filter = styled.div`
-  margin: 20px;
-  ${mobile({ width: "0px 20px", display: "flex", flexDirection: "column" })}
-`;
-
-const FilterText = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-  margin-right: 20px;
-  ${mobile({ marginRight: "0px" })}
-`;
-
-const Select = styled.select`
-  padding: 10px;
-  margin-right: 20px;
-  ${mobile({ margin: "10px 0px" })}
-`;
-const Option = styled.option``;
 
 const AllProducts = () => {
   const [sort, setSort] = useState("newest");
   const [cat, setCat] = useState("");
   return (
     <>
-      <Navbar />
-      <Container>
-        <Title>All Products</Title>
-        <div style={{display:"flex"}}>
-        <FilterContainer>
-          <Filter>
-            <FilterText>Sort Products:</FilterText>
-            <Select onChange={(e) => setSort(e.target.value)}>
-              <Option value="newest">Newest</Option>
-              <Option value="asc">Price (asc)</Option>
-              <Option value="desc">Price (desc)</Option>
-            </Select>
-          </Filter>
-        </FilterContainer>
-        <FilterContainer>
-          <Filter>
-            <FilterText>Sort by Category:</FilterText>
-            <Select onChange={(e) => setCat(e.target.value)}>
-              <Option value="">All Products</Option>
-              <Option value="Cake">Cake</Option>
-              <Option value="Cookies">Cookies</Option>
-              <Option value="Cupcakes">Cupcakes</Option>
-              <Option value="Pastry">Pastry</Option>
-            </Select>
-          </Filter>
-          </FilterContainer>
+      <ShopNavbar />
+      <div className="flex flex-col items-center md:mt-[10%] mt-[20%] p-2.5">
+        <h1 className="m-2.5 p-2.5">All Products</h1>
+        <div className="flex">
+        <div className="flex justify-between">
+          <div className="m-5 flex flex-col">
+            <span className="text-xl font-semibold md:mr-5 mr-0">Sort Products:</span>
+            <select className="md:mx-0 md:my-2.5 mx-3 my-0 p-2.5" onChange={(e) => setSort(e.target.value)}>
+              <option value="newest">Newest</option>
+              <option value="asc">Price (asc)</option>
+              <option value="desc">Price (desc)</option>
+            </select>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div className="m-5 flex flex-col">
+            <span className="text-xl font-semibold md:mr-5 mr-0">Sort by Category:</span>
+            <select className="  md:mx-0 md:my-2.5 mx-5 my-0 p-2.5" onChange={(e) => setCat(e.target.value)}>
+              <option value="">All Products</option>
+              <option value="Men">Men</option>
+              <option value="Women">Women</option>
+              <option value="Jewellery">Jewellery</option>
+              <option value="Kiddies">Kiddies</option>
+            </select>
+          </div>
+          </div>
           </div>
         <Products cat={cat} sort={sort} />
-      </Container>
+      </div>
       <Footer />
     </>
   );

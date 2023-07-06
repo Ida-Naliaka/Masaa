@@ -7,134 +7,49 @@ import {
   Pinterest,
   Room,
 } from "@material-ui/icons";
-import styled from "styled-components";
-import { mobile } from "../responsive";
 
-
-const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  height:150px;
-  ${mobile({ flexDirection: "column", textAlign: "center" })}
-`;
-const SocialContainer = styled.div`
-  display: flex;
-  ${mobile({
-    alignItems: "center",
-    justifyContent: "center",
-  })}
-`;
-const SocialIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  color: white;
-  background-color: #${(props) => props.color};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20px;
-`;
-
-const Center = styled.div`
-  flex: 1;
-  padding: 20px;
-  ${mobile({ display: "none" })}
-`;
-
-const Title = styled.h3`
-  margin-bottom: 20px;
-  ${mobile({ marginBottom: "10px", marginTop: "0px" })}
-`;
-
-const ContactItem = styled.div`
-  margin-bottom: 20px;
-  padding:5px;
-  display: flex;
-  align-items: center;
-  ${mobile({ marginBottom: "10px" })}
-`;
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items:center;
-  flex-wrap: wrap;
-  width: 100%;
-`;
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items:center;
-  flex-wrap: wrap;
-  width: 100%;
-`;
-//#E97451
 const Footer = () => {
   return (
-    <div style={{ background: "black", color: "white"}}>
-      <Container>
-        <Center>
-          <Title>Contact</Title>
-           <Column
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems:"center",
-              flexWrap: "wrap",
-              width: "100%",
-            }}
-          >
-          <Row
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems:"center",
-              flexWrap: "wrap",
-              width: "100%",
-            }}
-          >
-            <SocialContainer>
+    <div className="bg-black text-white">
+      <div className="flex p-5 flex-1 flex-col justify-center items-center flex-wrap w-full">
+        <div className="flex flex-row justify-center items-center flex-wrap w-full">
+          <div className="flex ">
             <a
               href="https://github.com/Ida-Naliaka"
               style={{ textDecoration: "none" }}
             >
-              <SocialIcon color="3B5999">
+              <div className="w-10 h-10 text-[white] flex items-center justify-center mr-5 rounded-[50%] bg-[#3B5999]">
                 <Facebook />
-              </SocialIcon>
+              </div>
             </a>
             <a href="https://github.com/Ida-Naliaka">
-              <SocialIcon color="E4405F">
+              <div className="w-10 h-10 text-[white] flex items-center justify-center mr-5 rounded-[50%] bg-[#E4405F]">
                 <Instagram />
-              </SocialIcon>
+              </div>
             </a>
             <a href="https://github.com/Ida-Naliaka">
-              <SocialIcon color="E60023">
+              <div className="w-10 h-10 text-[white] flex items-center justify-center mr-5 rounded-[50%] bg-[#E60023]">
                 <Pinterest />
-              </SocialIcon>
+              </div>
             </a>
-              </SocialContainer>
-            </Row>
-            <Row>
-          <ContactItem>
-            <Phone style={{ marginRight: "5px" }} />+254 7123 45678
-          </ContactItem>
-          <ContactItem>
-            <MailOutline style={{ marginRight: "10px" }} />wafulaida@gmail.com
-          </ContactItem>
-          <ContactItem>
-            <Room style={{ marginRight: "10px" }} />Bihi Towers, Moi Avenue
-          </ContactItem>
-            </Row>
-          </Column>
-        </Center>
-      </Container>
-     <small> &copy;Baked | All Rights Reserved</small>
+          </div>
+        </div>
+        <div className="flex md:flex-row flex-col justify-center items-center flex-wrap w-full">
+          <div className="flex items-center md:mb-5 mb-2.5 p-[5px]">
+            <Phone style={{ marginRight: "5px" }} />
+            +254 7123 45678
+          </div>
+          <div className="flex items-center md:mb-5 mb-2.5 p-[5px]">
+            <MailOutline style={{ marginRight: "10px" }} />
+            wafulaida@gmail.com
+          </div>
+          <div className="flex items-center md:mb-5 mb-2.5 p-[5px]">
+            <Room style={{ marginRight: "10px" }} />
+            Bihi Towers, Moi Avenue
+          </div>
+        </div>
+      </div>
+      <small> &copy;Masaa | All Rights Reserved</small>
     </div>
   );
 };

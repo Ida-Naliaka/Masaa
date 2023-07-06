@@ -46,7 +46,7 @@ class Checkout
             'PartyB' => $Business_Code,
             'PhoneNumber' => $phone_number,
             'CallBackURL' => $CallBackURL,
-            'AccountReference' => 'BakedCo',
+            'AccountReference' => 'MasaaCo',
             'TransactionDesc' => 'Payment for goods',
         ];
         $data2_string = json_encode($ch2_post_data);
