@@ -9,7 +9,7 @@ import {
   loginStart,
   loginSuccess,
   logout,
-} from "../redux/userRedux";
+} from "../../redux/userRedux";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,13 +29,13 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const Login = () => {
-  const [email, setEmail] = useState("");
+const AdminLogin = () => {
+  const [employeeId, setEmployeeId] = useState("");
   const [guest, setGuest] = useState(false);
   const [recoveryemail, setRecoveryEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-  const [recover, setRecover] = useState(false);
+  const [forgot, setForgot] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -48,14 +48,20 @@ const Login = () => {
   const handleClick = async () => {
     dispatch(loginStart());
     try {
-      const credentials = { email: email, password: password, type:"Client" };
-      const guestcred = { email: 'guestuser@gmail.com', password: 'zyxwvu@963', type:"Client" };
+      const credentials = { employeeId: employeeId, password: password, type:"Admin" };
+      const guestcred = { employeeId: 'TL001Masaa001', password: 'zyxwvu@963', type:"Admin" };
       await axios
         .post("https://masaawatches.000webhostapp.com/server/index.php?direct=user", guest? guestcred: credentials)
         .then((res) => {
           if (res.data.success) {
             dispatch(loginSuccess(res.data.user));
-            navigate("/shop");
+            if (res.data.user.type==="Admin"){
+            navigate("/admin/product/display");
+          } else {
+            toast.error('User is not authorized!');
+            navigate('/');
+          }
+            
           } else {
             toast.error(res.data.message)
              dispatch(loginFailure());
@@ -85,17 +91,17 @@ const Login = () => {
 
   return (
     <Container>
-      <div className="md:w-3/12 w-10/12 bg-[white] p-5">
-        <h1 className="text-2xl font-light">SIGN IN</h1>
+      <div className="md:w-3/12 w-9/12 bg-[white] p-5">
+        <h1 className="text-2xl font-light"> ADMIN SIGN IN</h1>
         <form className="flex flex-col">
           <input className="flex-1 min-w-[40%] mx-0 my-2.5 p-2.5 border-[black] border-[1px] border-solid"
-            placeholder="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Employee Id"
+            type="text"
+            value={employeeId}
+            onChange={(e) => setEmployeeId(e.target.value)}
           />
           <div className="flex">
-            <input className="flex-1 min-w-[40%] mx-0 my-2.5 p-2.5 text-center border-[black] border-[1px] border-solid"
+            <input className="flex-1 min-w-[40%] mx-0 my-2.5 text-center p-2.5 border-[black] border-[1px] border-solid"
               placeholder="Password"
               type={show ? "text" : "password"}
               value={password}
@@ -111,7 +117,7 @@ const Login = () => {
               <VisibilityOutlined style={{ fontSize: "20px", color: "gray" }} />
             </div>
           </div>
-          {recover && (
+          {forgot && (
             <>
               <label className="text-[red]">Recover your Account</label>
               <input className="flex-1 min-w-[40%] mx-0 my-2.5 p-2.5 border-[black] border-[1px] border-solid"
@@ -130,7 +136,7 @@ const Login = () => {
               </button>
             </>
           )}
-          <div className="flex justify-around">
+          <div className= "flex justify-around">
           <button className="w-2/5 bg-[teal] text-[white] cursor-pointer mb-2.5 px-5 py-[15px] border-[none] disabled:text-[green] disabled:cursor-not-allowed"
             onClick={(e) => {
               e.preventDefault();
@@ -151,23 +157,16 @@ const Login = () => {
             </button>
           </div>
           {error && <span className="text-[red]">Something went wrong...</span>}
-          <div onClick={() => setRecover(true)} className=" underline cursor-pointer" >
-            Don't remember your Password?
+          <div onClick={() => setForgot(true)} style={{ cursor: "pointer" }}>
+            <u>Don't remember your Password?</u>
           </div>
           <Link
-            to="/signup"
+            to="/adminsignup"
             className="text-xs underline cursor-pointer mx-[0px] my-[5px]"
           >
             CREATE A NEW ACCOUNT
           </Link>
-          <div 
-          onClick={()=>navigate("/adminlogin")}
-          className="text-md underline cursor-pointer mx-[0px] my-[5px] h-fit"
-          >
-            Admin
-          </div>
         </form>
-        
       </div>
       <ToastContainer
         position="top-center"
@@ -185,4 +184,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

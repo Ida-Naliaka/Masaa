@@ -23,7 +23,7 @@ const Myorders = () => {
   const handleDelete = (id) => {
     try {
       dispatch(deleteOrderStart());
-      axios.delete(`http://localhost/ecommerce/php-react-website-store/server/index.php?direct=order&orderid=${id}`).then((res) => {
+      axios.delete(`https://masaawatches.000webhostapp.com/server/index.php?direct=order&orderid=${id}`).then((res) => {
         if (res.data.status) {
           dispatch(deleteOrderSuccess(id));
           toast.success(res.data.message);
@@ -51,7 +51,7 @@ const Myorders = () => {
     try {
       dispatch(updateOrderStart());
       axios
-        .put(`http://localhost/ecommerce/php-react-website-store/server/index.php?direct=order&orderid=${id}`, updatedOrder)
+        .put(`https://masaawatches.000webhostapp.com/server/index.php?direct=order&orderid=${id}`, updatedOrder)
         .then((res) => {
           const response = res.data;
           if (response.status) {

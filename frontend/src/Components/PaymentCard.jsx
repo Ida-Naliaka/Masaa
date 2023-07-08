@@ -102,7 +102,7 @@ const PaymentCard = (props) => {
       address: address,
       status: 'pending',
     };
-    await axios.post('http://localhost/ecommerce/php-react-website-store/server/index.php?direct=paymentinit', body).then((res) => {
+    await axios.post('https://masaawatches.000webhostapp.com/server/index.php?direct=paymentinit', body).then((res) => {
       handleResponse(res.data);
     })
   }

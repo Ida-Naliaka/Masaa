@@ -30,7 +30,7 @@ const Cart = () => {
     user && (
       <div>
         <ShopNavbar />
-        <div className="md:p-5 p-2.5">
+        <div className="md:p-5 p-2.5 mt-[10%]">
               <h1 className="font-light text-center">YOUR CART</h1>
               <div className="flex items-center justify-between p-5">
                 <Link to="/shop">

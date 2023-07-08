@@ -22,7 +22,7 @@ const Userorders = () => {
     try {
       axios
         .get(
-          `http://localhost/ecommerce/php-react-website-store/server/index.php?direct=order&userid=${user.userid}`
+          `https://masaawatches.000webhostapp.com/server/index.php?direct=order&userid=${user.userid}`
         )
         .then((res) => {
           setOrders(res.data);
@@ -48,7 +48,7 @@ const Userorders = () => {
         dispatch(updateOrderStart());
         axios
           .put(
-            `http://localhost/ecommerce/php-react-website-store/server/index.php?direct=order&orderid=${id}`,
+            `https://masaawatches.000webhostapp.com/server/index.php?direct=order&orderid=${id}`,
             updatedOrder
           )
           .then((res) => {

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { VisibilityOutlined } from "@material-ui/icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -12,54 +13,65 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
     ),
-    url("https://firebasestorage.googleapis.com/v0/b/ecommerce-clientside-6ebf6.appspot.com/o/background%20gucci.jpg?alt=media&token=9f3a3cdc-62f1-4356-aa53-61b655125e7d")
+    url("https://firebasestorage.googleapis.com/v0/b/ecommerce-php-d25c1.appspot.com/o/HD-wallpaper-time-still-life-leaves-green-clock.jpg?alt=media&token=3a4da8d8-c535-4eae-9c73-84c3168809e1")
       center;
   object-fit: cover;
   display: flex;
   align-items: center;
-  justify-content: center;
-`;
-const Reset = () => {
+  justify-content: center`;
+
+const AdminSignup = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [employeeId, setEmployeeId] = useState('');
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
   const [show, setShow] = useState(false);
+  const [passErr, setPassErr] = useState(false);
+
+  
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
     const paswd = new RegExp("(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})");
-    if (!email || !password || !confirmPassword || !phone || !city) {
+    if (!name || !email || !password || !confirmPassword || !employeeId || !phone ||!city) {
       toast.warning("Please Fill all the Fields.");
       return;
     }
     if (password.match(paswd)) {
+      setPassErr(false)
       if (password !== confirmPassword) {
         toast.warning("Passwords do not match.");
         return;
       }
-      try {
-        const credentials = {
-          email: email,
-          password: password,
-          phone: phone,
-          city: city,
-        };
-        await axios
-          .post(
-            `https://masaawatches.000webhostapp.com/server/index.php?direct=user?direction=resetPassword`,
-            credentials
-          )
-          .then((res) => {
-            if (res.data)
-              toast.success("Account Recovery Successful! Please Log in");
-            navigate("/login");
-          });
-      } catch (error) {
-        toast.error(`Error Occured`);
-      }
+      const credentials = {
+        name: name,
+        type: "Admin",
+        employeeid: employeeId,
+        email: email,
+        password: password,
+        city: city,
+        phone: phone,
+        confirmationcode: "N/A",
+        status: "active",
+      };
+      await axios
+        .post(
+          "https://masaawatches.000webhostapp.com/server/index.php?direct=user",
+          credentials
+        )
+        .then((res) => {
+          if (res.data.status === 1) {
+            navigate("/adminlogin");
+          } else {
+            toast.error(`Error Occured`);
+            console.log(res.data);
+          }
+        });
     } else {
+      setPassErr(true)
       toast.warning("Please set a strong password");
       return;
     }
@@ -67,10 +79,20 @@ const Reset = () => {
   return (
     <Container>
       <div className="md:w-[40%] w-[75%] p-5 bg-white">
-        <h1 className="text-2xl font-light">Recover Your Account</h1>
-        <form className="flex flex-wrap">
+        <h1 className="text-2xl font-light">CREATE AN ADMIN ACCOUNT</h1>
+        <form className="flex flex-wrap items-center justify-center">
           <input
-            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2 border-[black] border-[1px] border-solid"
+            placeholder="Full name"
+            type="text"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            isRequired
+          />
+          <input
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2 border-[black] border-[1px] border-solid"
             placeholder="email"
             type="email"
             value={email}
@@ -79,28 +101,28 @@ const Reset = () => {
             }}
             isRequired
           />
-          <label style={{ marginTop: "10px", marginBottom: "0px" }}>
-            [Password must contain at least 7 characters, one digit and a
-            special character]
-          </label>
+          <input
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2 border-[black] border-[1px] border-solid"
+            placeholder="employee Id"
+            type="text"
+            value={employeeId}
+            onChange={(e) => {
+              setEmployeeId(e.target.value);
+            }}
+            isRequired
+          />
           <div style={{ display: "flex" }}>
             <input
-              className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+              className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2 text-center border-[black] border-[1px] border-solid"
               placeholder="password"
               type={show ? "text" : "password"}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              style={{ textAlign: "center" }}
             />
             <div
-              style={{
-                height: "fit-content",
-                marginTop: "20px",
-                padding: "10px",
-                position: "absolute",
-              }}
+              className="h-fit mt-5 p-2.5 absolute"
               onClick={(e) => {
                 setShow(!show);
                 e.preventDefault();
@@ -109,9 +131,9 @@ const Reset = () => {
               <VisibilityOutlined style={{ fontSize: "20px", color: "gray" }} />
             </div>
           </div>
-          <div style={{ display: "flex" }}>
+          <div className="flex">
             <input
-              className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+              className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2 text-center border-[black] border-[1px] border-solid"
               placeholder="Confirm Password"
               type={show ? "text" : "password"}
               value={confirmPassword}
@@ -119,15 +141,9 @@ const Reset = () => {
                 setConfirmPassword(e.target.value);
               }}
               isRequired
-              style={{ textAlign: "center" }}
             />
             <div
-              style={{
-                height: "fit-content",
-                marginTop: "20px",
-                padding: "10px",
-                position: "absolute",
-              }}
+              className="h-fit mt-5 p-2.5 absolute"
               onClick={(e) => {
                 setShow(!show);
                 e.preventDefault();
@@ -136,8 +152,12 @@ const Reset = () => {
               <VisibilityOutlined style={{ fontSize: "20px", color: "gray" }} />
             </div>
           </div>
+          {passErr && <div className="mt-2.5 text-[red]">
+            Password must contain at least 7 characters, one digit and a
+            special character
+          </div>}
           <input
-            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2 border-[black] border-[1px] border-solid"
             placeholder="Phone Number"
             type="text"
             value={phone}
@@ -147,7 +167,7 @@ const Reset = () => {
             isRequired
           />
           <input
-            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2 border-[black] border-[1px] border-solid"
             placeholder="City"
             type="city"
             value={city}
@@ -156,6 +176,13 @@ const Reset = () => {
             }}
             isRequired
           />
+          <span className="text-xs mx-[20px] my-0">
+            By creating an account, I consent to the processing of my personal
+            data in accordance with the{" "}
+            <b>
+              <a href="https://github.com/Ida-Naliaka">PRIVACY POLICY</a>
+            </b>
+          </span>
           <button
             className="w-[40%] bg-teal-700 text-white cursor-pointer px-4 py-5"
             onClick={(e) => {
@@ -163,9 +190,10 @@ const Reset = () => {
               handleSubmit();
             }}
           >
-            SUBMIT
+            CREATE
           </button>
         </form>
+        Already have an account? <Link to="/adminlogin"><u>Login</u></Link>
       </div>
       <ToastContainer
         position="top-center"
@@ -183,4 +211,4 @@ const Reset = () => {
   );
 };
 
-export default Reset;
+export default AdminSignup;

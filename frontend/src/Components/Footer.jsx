@@ -7,8 +7,10 @@ import {
   Pinterest,
   Room,
 } from "@material-ui/icons";
+import {useNavigate} from 'react-router-dom'
 
 const Footer = () => {
+  const navigate= useNavigate();
   return (
     <div className="bg-black text-white">
       <div className="flex p-5 flex-1 flex-col justify-center items-center flex-wrap w-full">
@@ -43,7 +45,7 @@ const Footer = () => {
             <MailOutline style={{ marginRight: "10px" }} />
             wafulaida@gmail.com
           </div>
-          <div className="flex items-center md:mb-5 mb-2.5 p-[5px]">
+          <div className="flex items-center md:mb-5 mb-2.5 p-[5px]" onClick={()=>navigate('/admin/product/display')}>
             <Room style={{ marginRight: "10px" }} />
             Bihi Towers, Moi Avenue
           </div>

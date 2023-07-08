@@ -34,7 +34,7 @@ const AddProduct = () => {
   const getProducts = () => {
     axios
       .get(
-        "http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product"
+        "https://masaawatches.000webhostapp.com/server/index.php?direct=product"
       )
       .then((response) => {
         setProducts(response.data);
@@ -155,7 +155,7 @@ const AddProduct = () => {
     ) {
       await axios
         .post(
-          "http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product",
+          "https://masaawatches.000webhostapp.com/server/index.php?direct=product",
           inputs
         )
         .then((res) => {
@@ -175,12 +175,12 @@ const AddProduct = () => {
   return (
     <>
       <div className="flex justify-around items-center w-full h-[100px] bg-[#795c5f] mb-10 px-[auto] py-2.5 border-b-[black] border-b border-solid top-0">
-        <div className="title">
+        <div className="title text-[white]">
           <h2>Product Add</h2>
         </div>
         <div className="flex justify-between items-center w-[30%]">
           <button
-            className="bg-[darken(#795c5f,10)] text-[black] cursor-pointer m-2.5 p-2.5"
+            className="bg-[darken(#795c5f,10)] text-[white] cursor-pointer m-2.5 p-2.5"
             onClick={(e) => {
               e.preventDefault();
               handleSubmit();
@@ -189,7 +189,7 @@ const AddProduct = () => {
             Save
           </button>
           <button
-            className="bg-[darken(#795c5f,10)] text-[black] cursor-pointer m-2.5 p-2.5"
+            className="bg-[darken(#795c5f,10)] text-[white] cursor-pointer m-2.5 p-2.5"
             onClick={() => {
               reset();
               navigate("/admin/product/display");

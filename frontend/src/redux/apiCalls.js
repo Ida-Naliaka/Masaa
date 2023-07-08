@@ -22,7 +22,7 @@ export const UserLogin = async (dispatch, user) => {
   const navigate = useNavigate();
 
   try {
-    const res = await axios.post("http://localhost/ecommerce/php-react-website-store/server/index.php?direct=user", user);
+    const res = await axios.post("https://masaawatches.000webhostapp.com/server/index.php?direct=user", user);
     dispatch(loginSuccess(res.data));
     navigate("/shop");
   } catch (error) {
@@ -43,7 +43,7 @@ export const AddOrder = async (order, dispatch) => {
         Authorization: `Bearer ${user.token}`,
       },
     };
-    await axios.post("http://localhost/ecommerce/php-react-website-store/server/index.php?direct=order", order, config).then((res) => {
+    await axios.post("https://masaawatches.000webhostapp.com/server/index.php?direct=order", order, config).then((res) => {
       dispatch(addOrderSuccess(res.data));
       alert("Product Added Successfully");
     });
@@ -56,7 +56,7 @@ export const AddOrder = async (order, dispatch) => {
 export const GetOrders = async (dispatch) => {
   dispatch(getOrderStart());
   try {
-    await axios.get('http://localhost/ecommerce/php-react-website-store/server/index.php?direct=order').then((res) => {
+    await axios.get('https://masaawatches.000webhostapp.com/server/index.php?direct=order').then((res) => {
       dispatch(getOrderSuccess(res.data));
     });
   } catch (err) {
@@ -79,7 +79,7 @@ export const UpdateOrder = async (orderId, updatedOrder, dispatch) => {
       },
     };
     await axios
-      .put(`http://localhost/ecommerce/php-react-website-store/server/index.php?direct=order?id=${orderId}`, updatedOrder, config)
+      .put(`https://masaawatches.000webhostapp.com/server/index.php?direct=order?id=${orderId}`, updatedOrder, config)
       .then((res) => {
         const response = res.data;
         dispatch(updateOrderSuccess({ orderId, response }));
@@ -99,7 +99,7 @@ export const DeleteOrder = async (id, dispatch) => {
         Authorization: `Bearer ${user.token}`,
       },
     };
-    await axios.delete(`http://localhost/ecommerce/php-react-website-store/server?direct=order?orderid=${id}`, config).then(() => {
+    await axios.delete(`https://masaawatches.000webhostapp.com/server?direct=order?orderid=${id}`, config).then(() => {
       dispatch(deleteOrderSuccess(id));
     });
   } catch (err) {

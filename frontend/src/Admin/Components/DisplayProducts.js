@@ -2,6 +2,12 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductState } from "./SelectContext";
+import { Person } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/userRedux";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DisplayProducts = () => {
   const {
@@ -13,6 +19,8 @@ const DisplayProducts = () => {
     setProducts,
   } = ProductState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.currentUser);
   const allElements = document.querySelectorAll(".delete-checkbox");
 
   useEffect(() => {
@@ -34,7 +42,7 @@ const DisplayProducts = () => {
   const getProducts = () => {
     axios
       .get(
-        "http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product"
+        "https://masaawatches.000webhostapp.com/server/index.php?direct=product"
       )
       .then((response) => {
         setProducts(response.data);
@@ -49,7 +57,7 @@ const DisplayProducts = () => {
   const handleDelete = () => {
     selectedProducts.map((prod) =>
       fetch(
-        "http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product",
+        "https://masaawatches.000webhostapp.com/server/index.php?direct=product",
         {
           method: "post",
           body: JSON.stringify({ sku: prod }),
@@ -67,24 +75,43 @@ const DisplayProducts = () => {
         })
     );
   };
+  const handleLogOut = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+  const handleDeleteProfile = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+    await axios
+      .delete(
+        `https://masaawatches.000webhostapp.com/server/index.php?direct=user?userid=${user.userid}`,
+        config
+      )
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((error) => {
+       toast.error(error);
+      });
+  };
   return (
     <>
       <div className="flex justify-around items-center w-full h-[100px] bg-[#795c5f] mb-10 px-[auto] py-2.5 border-b-[black] border-b border-solid top-0">
-        <div className="title">
+        <div className="title text-[white]">
           <h2>ProductList</h2>
         </div>
         <div className="flex justify-between items-center w-[30%]">
           <button
-            className="bg-[darken(#795c5f,10)] text-[black] cursor-pointer m-2.5 p-2.5"
+            className="bg-[darken(#795c5f,10)] text-[white] cursor-pointer m-2.5 p-2.5"
             onClick={() => navigate("/admin/product/add")}
           >
             ADD
           </button>
-          <button onClick={() => navigate("/admin/manage")}>
-            Website Management
-          </button>
           <button
-            className="bg-[darken(#795c5f,10)] text-[black] cursor-pointer m-2.5 p-2.5"
+            className="bg-[darken(#795c5f,10)] text-[white] cursor-pointer m-2.5 p-2.5"
             onClick={() => {
               setShow(false);
               handleDelete();
@@ -92,6 +119,39 @@ const DisplayProducts = () => {
           >
             MASS DELETE
           </button>
+          {user && 
+            <div className="md:text-xl text-base cursor-pointer text-black md:ml-6 ml-2">
+              <Person
+                data-tip
+                data-tooltip-id="logoutTip"
+                data-event="click"
+                style={{
+                  fontSize: "30px",
+                  cursor: "pointer",
+                  color: "white",
+                }}
+              />
+              <ReactTooltip
+                id="logoutTip"
+                place="bottom"
+                effect="solid"
+                clickable={true}
+              >
+                <span
+                  className="bg-white text-black text-center h-fit rounded-lg md:text-xl text-base cursor-pointer w-full p-2 m-2 flex justify-center"
+                  onClick={() => handleLogOut()}
+                >
+                  Logout
+                </span>
+                <span
+                  className="bg-white text-black text-center h-fit rounded-lg md:text-xl text-base cursor-pointer w-full p-2 m-2 flex justify-center"
+                  onClick={() => handleDeleteProfile()}
+                >
+                  Delete
+                </span>
+              </ReactTooltip>
+            </div>
+            }
         </div>
       </div>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,auto))] gap-2.5 auto-rows-[repeat(auto-fit,minmax(50px,auto))] max-w-full m-2.5 p-2.5">
@@ -110,7 +170,7 @@ const DisplayProducts = () => {
                   handleClick(item.sku);
                 }}
               />
-              <div className="normal-case text-[black] text-[15px] text-center min-h-[127px] cursor-pointer block relative mx-auto my-0 p-2.5">
+              <div className="normal-case text-[white] text-[15px] text-center min-h-[127px] cursor-pointer block relative mx-auto my-0 p-2.5">
                 <h5>{item.sku} </h5>
                 <p>{item.name}</p>
                 <p>${item.price}</p>
@@ -120,6 +180,18 @@ const DisplayProducts = () => {
           </label>
         ))}
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={1200}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 };

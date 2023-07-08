@@ -32,7 +32,7 @@ const ShopNavbar = () => {
     };
     await axios
       .delete(
-        `http://localhost/ecommerce/php-react-website-store/server/index.php?direct=user?userid=${user.userid}`,
+        `https://masaawatches.000webhostapp.com/server/index.php?direct=user?userid=${user.userid}`,
         config
       )
       .then((res) => {
@@ -43,14 +43,11 @@ const ShopNavbar = () => {
       });
   };
   return (
-    <nav
-      className="top-0 left-0 bg-gray-900 w-full fixed md:h-[15vh] h-12 flex justify-center"
-      style={{ zIndex: 4 }}
-    >
-      <div className=" w-full flex text-white items-center justify-between mr-[7%] ml-[5%]">
-        <div className="flex items-center flex-1 md:mb-0 mb-6 md:justify-center justify-between">
-          <div className="md:hidden contents cursor-pointer ml-0 m-[5px] p-[5px]">
-            <PopupState variant="popover" popupId="demo-popup-menu">
+    <nav className="top-0 left-0 bg-gray-900 w-full fixed md:h-[15vh] h-12 flex justify-center" style={{zIndex:4}}>
+    <div className=" w-full flex text-white items-center justify-between mr-[7%] ml-[5%]">
+      <div className="flex items-center flex-1 md:mb-0 mb-6 md:justify-center justify-between">
+        <div className="md:hidden contents cursor-pointer ml-0 m-[5px] p-[5px]">
+          <PopupState variant="popover" popupId="demo-popup-menu">
               {(popupState) => (
                 <React.Fragment>
                   <MenuIcon

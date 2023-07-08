@@ -11,8 +11,8 @@ const CategoryItem = ({ item }) => {
           alt=""
         />
         <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
-          <div className="p-[2px] mb-1 bg-white font-semibold opacity-80">
-            <h1 className="text-[#e97451] mb-5">{item.name}</h1>
+          <div className="p-[2px] mb-1 bg-white font-semibold opacity-50 w-1/2 flex items-center justify-center">
+            <h1 className="text-[black] text-2xl m-2.5">{item.name}</h1>
           </div>
           <button className="p-2 bg-white text-gray-600 cursor-pointer font-semibold md:mb-0 mb-1">
             SHOP NOW

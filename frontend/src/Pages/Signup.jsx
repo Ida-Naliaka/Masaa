@@ -12,7 +12,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
     ),
-    url("https://firebasestorage.googleapis.com/v0/b/ecommerce-clientside-6ebf6.appspot.com/o/background%20gucci.jpg?alt=media&token=9f3a3cdc-62f1-4356-aa53-61b655125e7d")
+    url("https://firebasestorage.googleapis.com/v0/b/ecommerce-php-d25c1.appspot.com/o/HD-wallpaper-time-still-life-leaves-green-clock.jpg?alt=media&token=3a4da8d8-c535-4eae-9c73-84c3168809e1")
       center;
   object-fit: cover;
   display: flex;
@@ -28,6 +28,7 @@ const Signup = () => {
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
   const [show, setShow] = useState(false);
+  const [passErr, setPassErr] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -37,6 +38,7 @@ const Signup = () => {
       return;
     }
     if (password.match(paswd)) {
+      setPassErr(false)
       if (password !== confirmPassword) {
         toast.warning("Passwords do not match.");
         return;
@@ -54,7 +56,7 @@ const Signup = () => {
       };
       await axios
         .post(
-          "http://localhost/ecommerce/php-react-website-store/server/index.php?direct=user",
+          "https://masaawatches.000webhostapp.com/server/index.php?direct=user",
           credentials
         )
         .then((res) => {
@@ -66,17 +68,18 @@ const Signup = () => {
           }
         });
     } else {
+      setPassErr(true)
       toast.warning("Please set a strong password");
       return;
     }
   };
   return (
     <Container>
-      <div className="md:w-[40%] w-[75%] p-5 bg-white">
+      <div className="md:w-[40%] w-[80%] p-5 bg-white">
         <h1 className="text-2xl font-light">CREATE AN ACCOUNT</h1>
-        <form className="flex flex-wrap">
+        <form className="flex flex-wrap items-center justify-center">
           <input
-            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+            className=" flex-1 min-w-[40%] mt-5 ml-2 mb-0 mr-0 p-2 border-[black] border-[1px] border-solid"
             placeholder="Full name"
             type="text"
             value={name}
@@ -86,7 +89,7 @@ const Signup = () => {
             isRequired
           />
           <input
-            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+            className=" flex-1 min-w-[40%] mt-5 ml-2 mb-0 mr-0 p-2 border-[black] border-[1px] border-solid"
             placeholder="email"
             type="email"
             value={email}
@@ -95,28 +98,17 @@ const Signup = () => {
             }}
             isRequired
           />
-          <label style={{ marginTop: "10px", marginBottom: "0px" }}>
-            [Password must contain at least 7 characters, one digit and a
-            special character]
-          </label>
-          <div style={{ display: "flex" }}>
+          <div className="flex">
             <input
-              className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+              className=" flex-1 min-w-40%] mt-5 ml-2 mb-0 mr-0 p-2 text-center border-[black] border-[1px] border-solid"
               placeholder="password"
               type={show ? "text" : "password"}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              style={{ textAlign: "center" }}
             />
-            <div
-              style={{
-                height: "fit-content",
-                marginTop: "20px",
-                padding: "10px",
-                position: "absolute",
-              }}
+            <div className="h-fit mt-5 p-2.5 absolute"
               onClick={(e) => {
                 setShow(!show);
                 e.preventDefault();
@@ -127,7 +119,7 @@ const Signup = () => {
           </div>
           <div className="flex">
             <input
-              className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+              className=" flex-1 min-w-[40%] mt-5 ml-2 mb-0 mr-0 p-2 text-center border-[black] border-[1px] border-solid"
               placeholder="Confirm Password"
               type={show ? "text" : "password"}
               value={confirmPassword}
@@ -135,15 +127,8 @@ const Signup = () => {
                 setConfirmPassword(e.target.value);
               }}
               isRequired
-              style={{ textAlign: "center" }}
             />
-            <div
-              style={{
-                height: "fit-content",
-                marginTop: "20px",
-                padding: "10px",
-                position: "absolute",
-              }}
+            <div className="h-fit mt-5 p-2.5 absolute"
               onClick={(e) => {
                 setShow(!show);
                 e.preventDefault();
@@ -151,9 +136,14 @@ const Signup = () => {
             >
               <VisibilityOutlined style={{ fontSize: "20px", color: "gray" }} />
             </div>
+            
           </div>
+          {passErr && <div className="mt-2.5 text-[red]">
+            Password must contain at least 7 characters, one digit and a
+            special character
+          </div>}
           <input
-            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+            className=" flex-1 min-w-[40%] mt-5 ml-2 mb-0 mr-0 p-2 border-[black] border-[1px] border-solid"
             placeholder="Phone Number"
             type="text"
             value={phone}
@@ -163,7 +153,7 @@ const Signup = () => {
             isRequired
           />
           <input
-            className=" flex-1 min-width-[40%] mt-5 ml-2 mb-0 mr-0 p-2"
+            className=" flex-1 min-w-[40%] mt-5 ml-2 mb-0 mr-0 p-2 border-[black] border-[1px] border-solid"
             placeholder="City"
             type="city"
             value={city}
@@ -189,7 +179,7 @@ const Signup = () => {
             CREATE
           </button>
         </form>
-        Already have an account? <Link to="/login"> Login</Link>
+        Already have an account? <Link to="/login"><u>Login</u></Link>
       </div>
       <ToastContainer
         position="top-center"

@@ -6,10 +6,15 @@ include_once "ValidateUser.php";
 class Auth
 {
     private $table='users';
+    public $statement;
     public function Login($user) {
-        $statement = (new Operations($this->table))->find('*', $user["email"], "email");
-            if ($statement->num_rows > 0) {
-                $userinfo=$statement->fetch_all(MYSQLI_ASSOC)[0];
+        if ($user["type"]==="Client"){
+            $this->statement = (new Operations($this->table))->find('*', $user["email"], "email");
+        } else if($user["type"]==="Admin") {
+            $this->statement = (new Operations($this->table))->find('*', $user["employeeId"], "employeeid");
+        }
+        if ($this->statement->num_rows > 0) {
+                $userinfo=$this->statement->fetch_all(MYSQLI_ASSOC)[0];
                 if (password_verify($user["password"], $userinfo["pass"])) {
                     $payload = array('userid'=>$userinfo["userid"],'name'=>$userinfo["name"], 'type'=>$userinfo["type"], 'exp'=>(time() + 60));
                     $validate =new ValidateUser();

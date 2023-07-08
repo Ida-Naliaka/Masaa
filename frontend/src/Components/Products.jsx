@@ -9,14 +9,13 @@ const Products = ({ cat, sort }) => {
     const getProducts = () => {
       try {
         if (cat) {
-          axios.get("http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product").then((res) => {
+          axios.get("https://masaawatches.000webhostapp.com/server/index.php?direct=product").then((res) => {
             const allprod = res.data;
             const categoryfiltered = allprod.filter((prod) => prod.category === cat)
             setProducts(categoryfiltered);
           });
         } else {
-          //initial endpoint http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product
-          axios.get("http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product").then((res) => {
+          axios.get("https://masaawatches.000webhostapp.com/server/index.php?direct=product").then((res) => {
             setProducts(res.data);
           });
         }
@@ -28,7 +27,7 @@ const Products = ({ cat, sort }) => {
   useEffect(() => {
     if (sort === "newest") {
       setProducts((prev) =>
-        [...prev].sort((a, b) => a.createdAt - b.createdAt)
+        [...prev].sort((a, b) => a.created_at - b.created_at)
       );
     } else if (sort === "asc") {
       setProducts((prev) => [...prev].sort((a, b) => a.price - b.price));

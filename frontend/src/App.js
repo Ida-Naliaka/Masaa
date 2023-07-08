@@ -14,9 +14,12 @@ import Myorders from "./Admin/Components/Myorders";
 import DisplayProducts from "./Admin/Components/DisplayProducts";
 import { useSelector } from 'react-redux';
 import Userorders from './Pages/Userorders';
+import AdminSignup from './Admin/Components/AdminSignup';
+import AdminLogin from './Admin/Components/AdminLogin';
 
 function App() {
     const user = useSelector((state) => state.user.currentUser);
+    const IsAdmin= user?.type==="Admin"?true:false;
 
   return (
     <div className="App">
@@ -27,9 +30,11 @@ function App() {
         <Route exact path="/statusupdate" element={user ? <Userorders />: <Navigate to="/login" />}/>
         <Route exact path="/products/:category" element={<ProductList />} />
         <Route exact path="/products/product/:id" element={<Product />} />
-        <Route exact path="/admin/product/add" element={<AddProduct/>} />
-        <Route exact path="/admin/product/display" element={<DisplayProducts />} />
-        <Route exact path="/admin/orders" element={<Myorders />} />
+        <Route exact path="/adminsignup" element={<AdminSignup />} />
+        <Route exact path="/adminlogin" element={<AdminLogin />} />
+        <Route exact path="/admin/product/add" element={IsAdmin?<AddProduct/>:<Navigate to="/adminlogin" />} />
+        <Route exact path="/admin/product/display" element={IsAdmin?<DisplayProducts />:<Navigate to="/adminlogin" />} />
+        <Route exact path="/admin/orders" element={IsAdmin?<Myorders />:<Navigate to="/adminlogin" />} />
         <Route exact path="cart" element={user ? <Cart /> : <Navigate to="/login" />}/>
         <Route exact path="/success/:paymentid" element={<Success />} />
         <Route exact path="/login" element={user ? <Navigate to="/" /> : <Login />} />

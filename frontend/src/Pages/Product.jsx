@@ -25,7 +25,7 @@ const Product = () => {
       try {
         axios
           .get(
-            "http://localhost/ecommerce/php-react-website-store/server/index.php?direct=product"
+            "https://masaawatches.000webhostapp.com/server/index.php?direct=product"
           )
           .then((res) => {
             const allprod = res.data;

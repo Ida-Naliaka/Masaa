@@ -53,6 +53,10 @@ class User
         if ($this->validateStatus()) {
             $errors[] = $this->validateStatus();
         }
+        if ($this->validateEmployeeId()) {
+            $errors[] = $this->validateEmployeeId();
+        }
+        
         $res=['errors'=> $errors, 
         'newuser'=>['name'=>$this->name, 'type'=>$this->type, 'employeeid'=>$this->employeeid,
          'email'=>$this->email, 'password'=>$this->password, 'phone'=>$this->phone, 
@@ -153,6 +157,11 @@ class User
     private function validateStatus()
     {
              $this->status = $this->data["status"];
+             return "";
+    }
+    private function validateEmployeeId()
+    {
+             $this->employeeid = $this->data["employeeId"];
              return "";
     }
 }
